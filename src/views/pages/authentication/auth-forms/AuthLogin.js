@@ -1,24 +1,19 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import authService from '../../../../services/auth.service';
+import localStorage from '../../../../services/local-storage.service';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Box,
     Button,
-    Checkbox,
-    Divider,
     FormControl,
-    FormControlLabel,
     FormHelperText,
-    Grid,
     IconButton,
     InputAdornment,
     InputLabel,
-    OutlinedInput,
-    Stack,
-    Typography,
-    useMediaQuery
+    OutlinedInput
 } from '@mui/material';
 
 // third party
@@ -32,22 +27,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-import Google from 'assets/images/icons/social-google.svg';
+import { useNavigate } from 'react-router';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
     const theme = useTheme();
     const scriptedRef = useScriptRef();
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    const customization = useSelector((state) => state.customization);
-    const [checked, setChecked] = useState(true);
-
-    const googleHandler = async () => {
-        console.error('Login');
-    };
-
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -61,12 +48,12 @@ const FirebaseLogin = ({ ...others }) => {
         <>
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    username: 'admin',
+                    password: 'admin',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+                    username: Yup.string().max(255).required('username is required'),
                     password: Yup.string().max(255).required('Password is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -74,6 +61,11 @@ const FirebaseLogin = ({ ...others }) => {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
+                            return await authService.login(values).then(res =>{
+                                localStorage.saveUserStorage(JSON.stringify(res.data));
+                                localStorage.saveTokenStorage(JSON.stringify(res.data.accessToken));
+                                return navigate("/");
+                            })
                         }
                     } catch (err) {
                         console.error(err);
@@ -87,21 +79,21 @@ const FirebaseLogin = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+                        <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-email-login">Username</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
-                                type="email"
-                                value={values.email}
-                                name="email"
+                                type="text"
+                                value={values.username}
+                                name="username"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                label="Email Address / Username"
+                                label="Username"
                                 inputProps={{}}
                             />
-                            {touched.email && errors.email && (
+                            {touched.username && errors.username && (
                                 <FormHelperText error id="standard-weight-helper-text-email-login">
-                                    {errors.email}
+                                    {errors.username}
                                 </FormHelperText>
                             )}
                         </FormControl>

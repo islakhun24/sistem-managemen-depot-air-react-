@@ -7,12 +7,12 @@ const icons = { IconDashboard };
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const keuangan = {
-    id: 'dashboard',
+    id: 'keuangen',
     title: 'Keuangan',
     type: 'group',
     children: [
         {
-            id: 'default',
+            id: 'pemasukan',
             title: 'Pemasukan',
             type: 'item',
             url: '/dashboard/default',
@@ -20,7 +20,7 @@ const keuangan = {
             breadcrumbs: false
         },
         {
-            id: 'default',
+            id: 'pengeluaran',
             title: 'Pengeluaran',
             type: 'item',
             url: '/dashboard/default',

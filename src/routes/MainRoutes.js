@@ -15,7 +15,10 @@ const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialI
 const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const Bank = Loadable(lazy(() => import('views/pages/banks/Index.js')));
+const Customer = Loadable(lazy(() => import('views/pages/customer/Index.js')));
+const Barang = Loadable(lazy(() => import('views/pages/barang/Index.js')));
+const Ewallet = Loadable(lazy(() => import('views/pages/ewallet/Index.js')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -28,33 +31,21 @@ const MainRoutes = {
             element: <DashboardDefault />
         },
         {
-            path: '/dashboard/default',
-            element: <DashboardDefault />
+            path: '/bank',
+            element: <Bank />
         },
         {
-            path: '/utils/util-typography',
-            element: <UtilsTypography />
+            path: '/customer',
+            element: <Customer />
         },
         {
-            path: '/utils/util-color',
-            element: <UtilsColor />
+            path: '/barang',
+            element: <Barang />
         },
         {
-            path: '/utils/util-shadow',
-            element: <UtilsShadow />
+            path: '/ewallet',
+            element: <Ewallet />
         },
-        {
-            path: '/icons/tabler-icons',
-            element: <UtilsTablerIcons />
-        },
-        {
-            path: '/icons/material-icons',
-            element: <UtilsMaterialIcons />
-        },
-        {
-            path: '/sample-page',
-            element: <SamplePage />
-        }
     ]
 };
 

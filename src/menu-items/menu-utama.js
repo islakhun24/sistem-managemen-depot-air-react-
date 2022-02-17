@@ -7,39 +7,39 @@ const icons = { IconDashboard };
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const MenuUtama = {
-    id: 'dashboard',
+    id: 'menu_utama',
     title: 'Menu Utama',
     type: 'group',
     children: [
         {
-            id: 'default',
+            id: 'bank',
             title: 'Banks',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/bank',
             icon: icons.IconDashboard,
             breadcrumbs: false
         },
         {
-            id: 'default',
+            id: 'barang',
             title: 'Barang',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/barang',
             icon: icons.IconDashboard,
             breadcrumbs: false
         },
         {
-            id: 'default',
+            id: 'customer',
             title: 'Customer',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/customer',
             icon: icons.IconDashboard,
             breadcrumbs: false
         },
         {
-            id: 'default',
+            id: 'ewallet',
             title: 'E-Wallet',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/ewallet',
             icon: icons.IconDashboard,
             breadcrumbs: false
         }

@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import storage from '../../services/local-storage.service';
 
 // project imports
 import Breadcrumbs from 'ui-component/extended/Breadcrumbs';
@@ -15,6 +16,7 @@ import navigation from 'menu-items';
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 
+import { useNavigate } from 'react-router-dom';
 // assets
 import { IconChevronRight } from '@tabler/icons';
 
@@ -74,6 +76,16 @@ const MainLayout = () => {
     const handleLeftDrawerToggle = () => {
         dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
     };
+    let navigate = useNavigate();
+    const user = storage.getUser();
+    const token = storage.getToken();
+    useEffect(()=>{
+        if(!user && !token){
+            return navigate("/auth/login");
+        }else {
+            return navigate("/");
+        }
+    },[user, token, navigate])
 
     useEffect(() => {
         dispatch({ type: SET_MENU, opened: !matchDownMd });

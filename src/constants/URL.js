@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8888/api";
+const BASE_URL = "https://galon-api.herokuapp.com/api";
 
 export const REGISTER = BASE_URL + '/auth/signup';
 export const LOGIN = BASE_URL + '/auth/signin';
