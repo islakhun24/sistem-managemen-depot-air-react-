@@ -1,5 +1,5 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, TextField } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import React from 'react';
 import MainCard from 'ui-component/cards/MainCard';
@@ -10,47 +10,39 @@ import apiService from '../../../services/api';
 const Index = (props)=>{
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
-    const [nama_akun, setNamaAkun] = React.useState('');
-    const [nomor_rekening, setNomorRekening] = React.useState('');
-    const [kode_bank, setKodeBank] = React.useState('');
-    const [nama_bank, setNamaBank] = React.useState('');
+    const [nama_customer, setNamaCustomer] = React.useState('');
+    const [nohp_customer, setNoHpCustomer] = React.useState('');
+    const [alamat_customer, setAlamatCustomer] = React.useState('');
     const [id, setId] = React.useState('');
     const [data, setData] = React.useState([]);
     const [isEdit, setIsEdit] = React.useState(false);
     const [loadingData, setLoadingData] = React.useState(true);
     const columns = [
         {
-          label: "Nama Akun",
-          name: "nama_akun",
+          label: "Nama Customer",
+          name: "nama_customer",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Nomor Rekening",
-          name: "nomor_rekening",
+          label: "Nomor HP",
+          name: "nohp_customer",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Kode",
-          name: "kode_bank",
+          label: "Alamat",
+          name: "alamat_customer",
           options: {
             filter: true,
             sort: true,
            }
         },
-        {
-          label: "Nama Bank",
-          name: "nama_bank",
-          options: {
-            filter: true,
-            sort: true,
-           }
-        },
+        
         {
             label: "Actions",
             name: "id",
@@ -70,10 +62,9 @@ const Index = (props)=>{
                                         color: 'white',
                                     }}
                                     onClick={()=>{
-                                        setNamaAkun(tableMeta.rowData[0]);
-                                        setNomorRekening(tableMeta.rowData[1]);
-                                        setKodeBank(tableMeta.rowData[2]);
-                                        setNamaBank(tableMeta.rowData[3]);
+                                        setNamaCustomer(tableMeta.rowData[0]);
+                                        setNoHpCustomer(tableMeta.rowData[1]);
+                                        setAlamatCustomer(tableMeta.rowData[2]);
                                         setId(value);
                                         setIsEdit(true)
                                         setOpen(true);
@@ -94,10 +85,9 @@ const Index = (props)=>{
                                     type="submit"
                                     variant="contained"
                                     onClick={()=>{
-                                        setNamaAkun(tableMeta.rowData[0]);
-                                        setNomorRekening(tableMeta.rowData[1]);
-                                        setKodeBank(tableMeta.rowData[2]);
-                                        setNamaBank(tableMeta.rowData[3]);
+                                        setNamaCustomer(tableMeta.rowData[0]);
+                                        setNoHpCustomer(tableMeta.rowData[1]);
+                                        setAlamatCustomer(tableMeta.rowData[2]);
                                         setId(value);
                                         setOpenDelete(true);
 
@@ -116,7 +106,7 @@ const Index = (props)=>{
         setOpen(true);
     };
     const handleClickOpenDelete = () => {
-        apiService.deleteBank(id).then(res=>{
+        apiService.deleteCustomer(id).then(res=>{
             console.log(res);
             setOpenDelete(false);
             getData();
@@ -127,17 +117,14 @@ const Index = (props)=>{
         setOpenDelete(false);
         clearForm();
     };
-    const handleChangeNamaAkun = (event) => {
-        setNamaAkun(event.target.value);
+    const handleChangeNamaCustomer = (event) => {
+        setNamaCustomer(event.target.value);
     }
-    const handleNomorRekening = (event) => {
-        setNomorRekening(event.target.value);
+    const handleNoHpCustomer = (event) => {
+        setNoHpCustomer(event.target.value);
     }
-    const handleChangeKodeBank = (event) => {
-        setKodeBank(event.target.value);
-    }
-    const handleChangeNamaBank = (event) => {
-        setNamaBank(event.target.value);
+    const handleChangeAlamatCustomer = (event) => {
+        setAlamatCustomer(event.target.value);
     }
     const handleClose = () => {
         clearForm();
@@ -145,17 +132,17 @@ const Index = (props)=>{
     };
     const handleSubmit = () => {
         const formData = {
-            nama_akun, nomor_rekening, kode_bank, nama_bank
+            nama_customer, nohp_customer, alamat_customer
         }
         if(isEdit===true){
-            apiService.updateBank(id, formData).then(res=>{
+            apiService.updateCustomer(id, formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
                 clearForm();
             })
         }else {
-            apiService.addBank(formData).then(res=>{
+            apiService.addCustomer(formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
@@ -166,15 +153,14 @@ const Index = (props)=>{
     }
 
     const clearForm = () => {
-        setNamaAkun('');
-        setNomorRekening('');
-        setKodeBank('');
-        setNamaBank('');
+        setNamaCustomer('');
+        setNoHpCustomer('');
+        setAlamatCustomer('');
         setId('');
         setIsEdit(false);
     }
     async function getData() {
-        await apiService.getBank().then((response) => {
+        await apiService.getCustomer().then((response) => {
           // check if the data is populated
           
           setData(response.data.data);
@@ -195,35 +181,40 @@ const Index = (props)=>{
    
     return (
        <div>
-            <MainCard title="BANK" secondary={
-                    <AnimateButton>
-                        <Button
-                            disableElevation
-                            fullWidth
-                            size="md"
-                            type="submit"
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleClickOpen}>
-                            Tambah Bank
-                        </Button>
-                    </AnimateButton>
-                }>
-                  <MUIDataTable
-                        title={"Employee List"}
-                        data={data}
-                        options={{
-                            filterType: 'string',
-                        }}
-                        columns={columns}/>
-
-                   
-            </MainCard>
+           <Stack spacing={2}>
+                <Grid container spacing={2}>
+                            <Grid item md={10}>
+                                <h1>Customer</h1>
+                            </Grid>
+                            <Grid item md={2}>
+                            <AnimateButton>
+                                <Button
+                                    disableElevation
+                                    fullWidth
+                                    size="md"
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleClickOpen}>
+                                    Tambah Customer
+                                </Button>
+                            </AnimateButton>
+                            </Grid>
+                </Grid>
+                <MUIDataTable
+                                elevation='0'
+                                title={"Customer List"}
+                                data={data}
+                                options={{
+                                    filterType: 'string',
+                                }}
+                                columns={columns}/>
+           </Stack>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Tambah Bank</DialogTitle>
+                <DialogTitle>Tambah Customer</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                    Tambahkan list bank anda.
+                    Tambahkan list customer anda.
                     </DialogContentText>
                     <Divider sx={{
                         mt:3, mb:3
@@ -232,12 +223,12 @@ const Index = (props)=>{
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Nama Akun"
+                    label="Nama Customer"
                     type="text"
-                    value={nama_akun}
+                    value={nama_customer}
                     fullWidth
                     variant="outlined"
-                    onChange={handleChangeNamaAkun}
+                    onChange={handleChangeNamaCustomer}
                     />
                     <TextField
                     sx={{
@@ -245,24 +236,11 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="Nomor Rekening"
+                    label="Nomor Hp"
                     type="text"
-                    value={nomor_rekening}
+                    value={nohp_customer}
                     fullWidth
-                    onChange={handleNomorRekening}
-                    variant="outlined"
-                    />
-                    <TextField
-                    sx={{
-                        mt: 2
-                    }}
-                    margin="dense"
-                    id="name"
-                    label="Kode Bank"
-                    type="text"
-                    fullWidth
-                    value={kode_bank}
-                    onChange={handleChangeKodeBank}
+                    onChange={handleNoHpCustomer}
                     variant="outlined"
                     />
                     <TextField
@@ -271,13 +249,14 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="Nama Bank"
+                    label="Alamat"
                     type="text"
-                    value={nama_bank}
-                    onChange={handleChangeNamaBank}
                     fullWidth
+                    value={alamat_customer}
+                    onChange={handleChangeAlamatCustomer}
                     variant="outlined"
                     />
+                    
                 </DialogContent>
                 <DialogActions sx={{mb: 1}}>
                     <Button sx={{color: '#CC0000'}} onClick={handleClose}>Keluar</Button>
@@ -297,7 +276,7 @@ const Index = (props)=>{
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Apakah anda yakin ingin hapus data <b>{nama_akun}</b>?.
+                    Apakah anda yakin ingin hapus data <b>{nama_customer}</b>?.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>

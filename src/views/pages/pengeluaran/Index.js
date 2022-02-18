@@ -6,43 +6,75 @@ import MainCard from 'ui-component/cards/MainCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import apiService from '../../../services/api';
 
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+// or for Day.js
+// or for Luxon
+// or for Moment.js
 
 const Index = (props)=>{
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
-    const [nama_wallet, setNamaWallet] = React.useState('');
-    const [nomor_hp, setNoHp] = React.useState('');
-    const [qr_code, setQrCode] = React.useState('');
+    const [nama_pengeluaran, setNamaPengeluaran] = React.useState('');
+    const [satuan, setSatuan] = React.useState('');
+    const [jumlah, setJumlah] = React.useState('');
+    const [harga, setHarga] = React.useState('');
+    const [keterangan, setKeterangan] = React.useState('');
+    const [date, setDate] = React.useState(new Date());
     const [id, setId] = React.useState('');
     const [data, setData] = React.useState([]);
     const [isEdit, setIsEdit] = React.useState(false);
     const [loadingData, setLoadingData] = React.useState(true);
     const columns = [
         {
-          label: "Nama Wallet",
-          name: "nama_wallet",
+          label: "Nama Pengeluaran",
+          name: "nama_pengeluaran",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Nomor HP",
-          name: "nomor_hp",
+          label: "Satuan",
+          name: "satuan",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "QR CODE",
-          name: "qr_code",
+          label: "Jumlah",
+          name: "jumlah",
           options: {
             filter: true,
             sort: true,
            }
         },
-        
+        {
+          label: "Harga",
+          name: "harga",
+          options: {
+            filter: true,
+            sort: true,
+           }
+        },
+        {
+          label: "Keterangan",
+          name: "keterangan",
+          options: {
+            filter: true,
+            sort: true,
+           }
+        },
+        {
+          label: "Tanggal",
+          name: "date",
+          options: {
+            filter: true,
+            sort: true,
+           }
+        },
         {
             label: "Actions",
             name: "id",
@@ -62,9 +94,11 @@ const Index = (props)=>{
                                         color: 'white',
                                     }}
                                     onClick={()=>{
-                                        setNamaWallet(tableMeta.rowData[0]);
-                                        setNoHp(tableMeta.rowData[1]);
-                                        setQrCode(tableMeta.rowData[2]);
+                                        setNamaPengeluaran(tableMeta.rowData[0]);
+                                        setSatuan(tableMeta.rowData[1])
+                                        setJumlah(tableMeta.rowData[2])
+                                        setHarga(tableMeta.rowData[3])
+                                        setKeterangan(tableMeta.rowData[4])
                                         setId(value);
                                         setIsEdit(true)
                                         setOpen(true);
@@ -85,9 +119,11 @@ const Index = (props)=>{
                                     type="submit"
                                     variant="contained"
                                     onClick={()=>{
-                                        setNamaWallet(tableMeta.rowData[0]);
-                                        setNoHp(tableMeta.rowData[1]);
-                                        setQrCode(tableMeta.rowData[2]);
+                                        setNamaPengeluaran(tableMeta.rowData[0]);
+                                        setSatuan(tableMeta.rowData[1])
+                                        setJumlah(tableMeta.rowData[2])
+                                        setHarga(tableMeta.rowData[3])
+                                        setKeterangan(tableMeta.rowData[4])
                                         setId(value);
                                         setOpenDelete(true);
 
@@ -106,7 +142,7 @@ const Index = (props)=>{
         setOpen(true);
     };
     const handleClickOpenDelete = () => {
-        apiService.deleteEwallet(id).then(res=>{
+        apiService.deletePengeluaran(id).then(res=>{
             console.log(res);
             setOpenDelete(false);
             getData();
@@ -117,14 +153,23 @@ const Index = (props)=>{
         setOpenDelete(false);
         clearForm();
     };
-    const handleChangeNamaWallet = (event) => {
-        setNamaWallet(event.target.value);
+    const handleChangeNamaPengeluaran = (event) => {
+        setNamaPengeluaran(event.target.value);
     }
-    const handleNoHp = (event) => {
-        setNoHp(event.target.value);
+    const handleNomorSatuan = (event) => {
+        setSatuan(event.target.value);
     }
-    const handleChangeQrCode = (event) => {
-        setQrCode(event.target.value);
+    const handleChangeJumlah = (event) => {
+        setJumlah(event.target.value);
+    }
+    const handleChangeHarga = (event) => {
+        setHarga(event.target.value);
+    }
+    const handleChangeKeterangan = (event) => {
+        setKeterangan(event.target.value);
+    }
+    const handleChangeDate = (event) => {
+        setDate(event.target.value);
     }
     const handleClose = () => {
         clearForm();
@@ -132,17 +177,17 @@ const Index = (props)=>{
     };
     const handleSubmit = () => {
         const formData = {
-            nama_wallet, nomor_hp, qr_code
+            nama_pengeluaran, jumlah, satuan, harga, keterangan, date
         }
         if(isEdit===true){
-            apiService.updateEwallet(id, formData).then(res=>{
+            apiService.updatePengeluaran(id, formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
                 clearForm();
             })
         }else {
-            apiService.addEwallet(formData).then(res=>{
+            apiService.addPengeluaran(formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
@@ -153,14 +198,16 @@ const Index = (props)=>{
     }
 
     const clearForm = () => {
-        setNamaWallet('');
-        setNoHp('');
-        setQrCode('');
+        setNamaPengeluaran('');
+        setSatuan('')
+        setJumlah('')
+        setHarga('')
+        setKeterangan('')
         setId('');
         setIsEdit(false);
     }
     async function getData() {
-        await apiService.getEwallet().then((response) => {
+        await apiService.getPengeluaran().then((response) => {
           // check if the data is populated
           
           setData(response.data.data);
@@ -181,10 +228,10 @@ const Index = (props)=>{
    
     return (
        <div>
-             <Stack spacing={2}>
+            <Stack spacing={2}>
                 <Grid container spacing={2}>
                             <Grid item md={10}>
-                                <h1>Ewallet</h1>
+                                <h1>Pengeluaran</h1>
                             </Grid>
                             <Grid item md={2}>
                             <AnimateButton>
@@ -196,14 +243,14 @@ const Index = (props)=>{
                                     variant="contained"
                                     color="secondary"
                                     onClick={handleClickOpen}>
-                                    Tambah Ewallet
+                                    Tambah Pengeluaran
                                 </Button>
                             </AnimateButton>
                             </Grid>
                 </Grid>
                 <MUIDataTable
                                 elevation='0'
-                                title={"Ewallet List"}
+                                title={"Pengeluaran List"}
                                 data={data}
                                 options={{
                                     filterType: 'string',
@@ -211,10 +258,10 @@ const Index = (props)=>{
                                 columns={columns}/>
            </Stack>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Tambah Waller</DialogTitle>
+                <DialogTitle>Tambah Pengeluaran</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                    Tambahkan list wallet anda.
+                    Tambahkan list pengeluaran anda.
                     </DialogContentText>
                     <Divider sx={{
                         mt:3, mb:3
@@ -223,12 +270,12 @@ const Index = (props)=>{
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Nama Wallet"
+                    label="Nama Pengeluaran"
                     type="text"
-                    value={nama_wallet}
+                    value={nama_pengeluaran}
                     fullWidth
                     variant="outlined"
-                    onChange={handleChangeNamaWallet}
+                    onChange={handleChangeNamaPengeluaran}
                     />
                     <TextField
                     sx={{
@@ -236,11 +283,11 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="Nomor Hp"
+                    label="Satuan"
                     type="text"
-                    value={nomor_hp}
+                    value={satuan}
                     fullWidth
-                    onChange={handleNoHp}
+                    onChange={handleNomorSatuan}
                     variant="outlined"
                     />
                     <TextField
@@ -249,13 +296,51 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="QR Code"
-                    type="text"
+                    label="Jumlah"
+                    type="number"
                     fullWidth
-                    value={qr_code}
-                    onChange={handleChangeQrCode}
+                    value={jumlah}
+                    onChange={handleChangeJumlah}
                     variant="outlined"
                     />
+                    <TextField
+                    sx={{
+                        mt: 2
+                    }}
+                    margin="dense"
+                    id="name"
+                    label="Harga"
+                    type="number"
+                    value={harga}
+                    onChange={handleChangeHarga}
+                    fullWidth
+                    variant="outlined"
+                    />
+                    <TextField
+                    
+                    margin="dense"
+                    id="name"
+                    label="Keterangan"
+                    type="text"
+                    value={keterangan}
+                    onChange={handleChangeKeterangan}
+                    fullWidth
+                    variant="outlined"
+                    />
+                     <LocalizationProvider dateAdapter={DateAdapter}>
+                     <DatePicker
+                        label="Tanggal"
+                        
+                        variant="outlined"
+                        value={date}
+                        onChange={(newValue) => {
+                            setDate(newValue);
+                          }}
+                        renderInput={(params) => <TextField sx={{
+                            mt: 2
+                        }} fullWidth {...params} />}
+                        />
+                     </LocalizationProvider>
                     
                 </DialogContent>
                 <DialogActions sx={{mb: 1}}>
@@ -276,7 +361,7 @@ const Index = (props)=>{
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Apakah anda yakin ingin hapus data <b>{nama_wallet}</b>?.
+                    Apakah anda yakin ingin hapus data <b>{nama_pengeluaran}</b>?.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>

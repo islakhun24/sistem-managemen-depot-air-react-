@@ -1,5 +1,5 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, TextField } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import React from 'react';
 import MainCard from 'ui-component/cards/MainCard';
@@ -10,42 +10,42 @@ import apiService from '../../../services/api';
 const Index = (props)=>{
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
-    const [nama_akun, setNamaAkun] = React.useState('');
-    const [nomor_rekening, setNomorRekening] = React.useState('');
-    const [kode_bank, setKodeBank] = React.useState('');
-    const [nama_bank, setNamaBank] = React.useState('');
+    const [nama_barang, setNamaBarang] = React.useState('');
+    const [satuan, setSatuan] = React.useState('');
+    const [jumlah, setJumlah] = React.useState('');
+    const [harga, setHarga] = React.useState('');
     const [id, setId] = React.useState('');
     const [data, setData] = React.useState([]);
     const [isEdit, setIsEdit] = React.useState(false);
     const [loadingData, setLoadingData] = React.useState(true);
     const columns = [
         {
-          label: "Nama Akun",
-          name: "nama_akun",
+          label: "Nama Barang",
+          name: "nama_barang",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Nomor Rekening",
-          name: "nomor_rekening",
+          label: "Satuan",
+          name: "satuan",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Kode",
-          name: "kode_bank",
+          label: "Jumlah",
+          name: "jumlah",
           options: {
             filter: true,
             sort: true,
            }
         },
         {
-          label: "Nama Bank",
-          name: "nama_bank",
+          label: "Harga",
+          name: "harga",
           options: {
             filter: true,
             sort: true,
@@ -70,10 +70,10 @@ const Index = (props)=>{
                                         color: 'white',
                                     }}
                                     onClick={()=>{
-                                        setNamaAkun(tableMeta.rowData[0]);
-                                        setNomorRekening(tableMeta.rowData[1]);
-                                        setKodeBank(tableMeta.rowData[2]);
-                                        setNamaBank(tableMeta.rowData[3]);
+                                        setNamaBarang(tableMeta.rowData[0]);
+                                        setSatuan(tableMeta.rowData[1]);
+                                        setJumlah(tableMeta.rowData[2]);
+                                        setHarga(tableMeta.rowData[3]);
                                         setId(value);
                                         setIsEdit(true)
                                         setOpen(true);
@@ -94,10 +94,10 @@ const Index = (props)=>{
                                     type="submit"
                                     variant="contained"
                                     onClick={()=>{
-                                        setNamaAkun(tableMeta.rowData[0]);
-                                        setNomorRekening(tableMeta.rowData[1]);
-                                        setKodeBank(tableMeta.rowData[2]);
-                                        setNamaBank(tableMeta.rowData[3]);
+                                        setNamaBarang(tableMeta.rowData[0]);
+                                        setSatuan(tableMeta.rowData[1]);
+                                        setJumlah(tableMeta.rowData[2]);
+                                        setHarga(tableMeta.rowData[3]);
                                         setId(value);
                                         setOpenDelete(true);
 
@@ -116,7 +116,7 @@ const Index = (props)=>{
         setOpen(true);
     };
     const handleClickOpenDelete = () => {
-        apiService.deleteBank(id).then(res=>{
+        apiService.deleteBarang(id).then(res=>{
             console.log(res);
             setOpenDelete(false);
             getData();
@@ -127,17 +127,17 @@ const Index = (props)=>{
         setOpenDelete(false);
         clearForm();
     };
-    const handleChangeNamaAkun = (event) => {
-        setNamaAkun(event.target.value);
+    const handleChangeNamaBarang = (event) => {
+        setNamaBarang(event.target.value);
     }
-    const handleNomorRekening = (event) => {
-        setNomorRekening(event.target.value);
+    const handleChangeSatuan = (event) => {
+        setSatuan(event.target.value);
     }
-    const handleChangeKodeBank = (event) => {
-        setKodeBank(event.target.value);
+    const handleChangeJumlah = (event) => {
+        setJumlah(event.target.value);
     }
-    const handleChangeNamaBank = (event) => {
-        setNamaBank(event.target.value);
+    const handleChangeHarga = (event) => {
+        setHarga(event.target.value);
     }
     const handleClose = () => {
         clearForm();
@@ -145,17 +145,17 @@ const Index = (props)=>{
     };
     const handleSubmit = () => {
         const formData = {
-            nama_akun, nomor_rekening, kode_bank, nama_bank
+            nama_barang, satuan, jumlah, harga
         }
         if(isEdit===true){
-            apiService.updateBank(id, formData).then(res=>{
+            apiService.updateBarang(id, formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
                 clearForm();
             })
         }else {
-            apiService.addBank(formData).then(res=>{
+            apiService.addBarang(formData).then(res=>{
                 console.log(res);
                 setOpen(false);
                 getData();
@@ -166,15 +166,15 @@ const Index = (props)=>{
     }
 
     const clearForm = () => {
-        setNamaAkun('');
-        setNomorRekening('');
-        setKodeBank('');
-        setNamaBank('');
+        setNamaBarang('');
+        setSatuan('');
+        setJumlah('');
+        setHarga('');
         setId('');
         setIsEdit(false);
     }
     async function getData() {
-        await apiService.getBank().then((response) => {
+        await apiService.getBarang().then((response) => {
           // check if the data is populated
           
           setData(response.data.data);
@@ -195,35 +195,40 @@ const Index = (props)=>{
    
     return (
        <div>
-            <MainCard title="BANK" secondary={
-                    <AnimateButton>
-                        <Button
-                            disableElevation
-                            fullWidth
-                            size="md"
-                            type="submit"
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleClickOpen}>
-                            Tambah Bank
-                        </Button>
-                    </AnimateButton>
-                }>
-                  <MUIDataTable
-                        title={"Employee List"}
-                        data={data}
-                        options={{
-                            filterType: 'string',
-                        }}
-                        columns={columns}/>
-
-                   
-            </MainCard>
+            <Stack spacing={2}>
+                <Grid container spacing={2}>
+                            <Grid item md={10}>
+                                <h1>Barang</h1>
+                            </Grid>
+                            <Grid item md={2}>
+                            <AnimateButton>
+                                <Button
+                                    disableElevation
+                                    fullWidth
+                                    size="md"
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleClickOpen}>
+                                    Tambah Barang
+                                </Button>
+                            </AnimateButton>
+                            </Grid>
+                </Grid>
+                <MUIDataTable
+                                elevation='0'
+                                title={"Barang List"}
+                                data={data}
+                                options={{
+                                    filterType: 'string',
+                                }}
+                                columns={columns}/>
+           </Stack>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Tambah Bank</DialogTitle>
+                <DialogTitle>Tambah Barang</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                    Tambahkan list bank anda.
+                    Tambahkan list barang anda.
                     </DialogContentText>
                     <Divider sx={{
                         mt:3, mb:3
@@ -232,12 +237,12 @@ const Index = (props)=>{
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Nama Akun"
+                    label="Nama Barang"
                     type="text"
-                    value={nama_akun}
+                    value={nama_barang}
                     fullWidth
                     variant="outlined"
-                    onChange={handleChangeNamaAkun}
+                    onChange={handleChangeNamaBarang}
                     />
                     <TextField
                     sx={{
@@ -245,24 +250,11 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="Nomor Rekening"
+                    label="Satuan"
                     type="text"
-                    value={nomor_rekening}
+                    value={satuan}
                     fullWidth
-                    onChange={handleNomorRekening}
-                    variant="outlined"
-                    />
-                    <TextField
-                    sx={{
-                        mt: 2
-                    }}
-                    margin="dense"
-                    id="name"
-                    label="Kode Bank"
-                    type="text"
-                    fullWidth
-                    value={kode_bank}
-                    onChange={handleChangeKodeBank}
+                    onChange={handleChangeSatuan}
                     variant="outlined"
                     />
                     <TextField
@@ -271,10 +263,23 @@ const Index = (props)=>{
                     }}
                     margin="dense"
                     id="name"
-                    label="Nama Bank"
+                    label="Jumlah"
+                    type="number"
+                    fullWidth
+                    value={jumlah}
+                    onChange={handleChangeJumlah}
+                    variant="outlined"
+                    />
+                    <TextField
+                    sx={{
+                        mt: 2
+                    }}
+                    margin="dense"
+                    id="name"
+                    label="Harga"
                     type="text"
-                    value={nama_bank}
-                    onChange={handleChangeNamaBank}
+                    value={harga}
+                    onChange={handleChangeHarga}
                     fullWidth
                     variant="outlined"
                     />
@@ -297,7 +302,7 @@ const Index = (props)=>{
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Apakah anda yakin ingin hapus data <b>{nama_akun}</b>?.
+                    Apakah anda yakin ingin hapus data <b>{nama_barang}</b>?.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>

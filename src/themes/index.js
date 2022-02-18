@@ -34,6 +34,14 @@ export const theme = (customization) => {
     const themeOptions = {
         direction: 'ltr',
         palette: themePalette(themeOption),
+        overrides: {
+            MUIDataTableToolbarSelect: {
+                root:{
+                boxShadow: 'none !important',
+                borderRadius: 0,
+                }
+            }
+          },
         mixins: {
             toolbar: {
                 minHeight: '48px',

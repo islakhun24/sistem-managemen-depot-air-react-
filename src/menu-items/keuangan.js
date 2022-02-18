@@ -23,7 +23,7 @@ const keuangan = {
             id: 'pengeluaran',
             title: 'Pengeluaran',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/pengeluaran',
             icon: icons.IconDashboard,
             breadcrumbs: false
         }

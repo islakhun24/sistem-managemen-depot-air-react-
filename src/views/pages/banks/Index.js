@@ -1,13 +1,31 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, TextField } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import React from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import apiService from '../../../services/api';
-
+import {
+    createMuiTheme,
+    withStyles,
+    ThemeProvider
+  } from "@mui/material/styles";
 
 const Index = (props)=>{
+
+    const getMuiTheme = () =>
+    createMuiTheme({
+      overrides: {
+        MuiPaper: {
+            elevation2: {
+                boxShadow: 'none !important',
+                borderRadius: 0,
+                elevation:0,
+            }
+          },
+        
+      }
+    });
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
     const [nama_akun, setNamaAkun] = React.useState('');
@@ -195,30 +213,35 @@ const Index = (props)=>{
    
     return (
        <div>
-            <MainCard title="BANK" secondary={
-                    <AnimateButton>
-                        <Button
-                            disableElevation
-                            fullWidth
-                            size="md"
-                            type="submit"
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleClickOpen}>
-                            Tambah Bank
-                        </Button>
-                    </AnimateButton>
-                }>
-                  <MUIDataTable
-                        title={"Employee List"}
-                        data={data}
-                        options={{
-                            filterType: 'string',
-                        }}
-                        columns={columns}/>
-
-                   
-            </MainCard>
+           <Stack spacing={2}>
+                <Grid container spacing={2}>
+                            <Grid item md={10}>
+                                <h1>BANK</h1>
+                            </Grid>
+                            <Grid item md={2}>
+                            <AnimateButton>
+                                <Button
+                                    disableElevation
+                                    fullWidth
+                                    size="md"
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleClickOpen}>
+                                    Tambah Bank
+                                </Button>
+                            </AnimateButton>
+                            </Grid>
+                </Grid>
+                <MUIDataTable
+                                elevation='0'
+                                title={"Bank List"}
+                                data={data}
+                                options={{
+                                    filterType: 'string',
+                                }}
+                                columns={columns}/>
+           </Stack>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Tambah Bank</DialogTitle>
                 <DialogContent>

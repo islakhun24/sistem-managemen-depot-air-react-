@@ -19,6 +19,7 @@ const Bank = Loadable(lazy(() => import('views/pages/banks/Index.js')));
 const Customer = Loadable(lazy(() => import('views/pages/customer/Index.js')));
 const Barang = Loadable(lazy(() => import('views/pages/barang/Index.js')));
 const Ewallet = Loadable(lazy(() => import('views/pages/ewallet/Index.js')));
+const Pengeluaran = Loadable(lazy(() => import('views/pages/pengeluaran/Index.js')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -45,6 +46,10 @@ const MainRoutes = {
         {
             path: '/ewallet',
             element: <Ewallet />
+        },
+        {
+            path: '/pengeluaran',
+            element: <Pengeluaran />
         },
     ]
 };
