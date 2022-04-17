@@ -1,295 +1,198 @@
-
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, TextField } from '@mui/material';
-import MUIDataTable from 'mui-datatables';
-import React from 'react';
-import MainCard from 'ui-component/cards/MainCard';
-import AnimateButton from 'ui-component/extended/AnimateButton';
-import apiService from '../../../services/api';
-
-
-const Index = (props)=>{
-    const [open, setOpen] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [nama_wallet, setNamaWallet] = React.useState('');
-    const [nomor_hp, setNoHp] = React.useState('');
-    const [qr_code, setQrCode] = React.useState('');
-    const [id, setId] = React.useState('');
-    const [data, setData] = React.useState([]);
-    const [isEdit, setIsEdit] = React.useState(false);
-    const [loadingData, setLoadingData] = React.useState(true);
-    const columns = [
-        {
-          label: "Nama Wallet",
-          name: "nama_wallet",
-          options: {
-            filter: true,
-            sort: true,
-           }
-        },
-        {
-          label: "Nomor HP",
-          name: "nomor_hp",
-          options: {
-            filter: true,
-            sort: true,
-           }
-        },
-        {
-          label: "QR CODE",
-          name: "qr_code",
-          options: {
-            filter: true,
-            sort: true,
-           }
-        },
-        
-        {
-            label: "Actions",
-            name: "id",
-            options: {
-                customBodyRender: (value, tableMeta, updateValue) => {
-                    return (
-                        <Stack direction="row" spacing={2}>
-                            <AnimateButton>
-                                <Button
-                                    disableElevation
-                                    fullWidth
-                                    color="success"
-                                    size="small"
-                                    type="submit"
-                                    variant="contained"
-                                    sx={{
-                                        color: 'white',
-                                    }}
-                                    onClick={()=>{
-                                        setNamaWallet(tableMeta.rowData[0]);
-                                        setNoHp(tableMeta.rowData[1]);
-                                        setQrCode(tableMeta.rowData[2]);
-                                        setId(value);
-                                        setIsEdit(true)
-                                        setOpen(true);
-
-                                    }}>
-                                    Edit
-                                </Button>
-                            </AnimateButton>
-                            <AnimateButton>
-                                <Button
-                                    disableElevation
-                                    fullWidth
-                                    sx={{
-                                        color: 'white',
-                                    }}
-                                    color="error"
-                                    size="small"
-                                    type="submit"
-                                    variant="contained"
-                                    onClick={()=>{
-                                        setNamaWallet(tableMeta.rowData[0]);
-                                        setNoHp(tableMeta.rowData[1]);
-                                        setQrCode(tableMeta.rowData[2]);
-                                        setId(value);
-                                        setOpenDelete(true);
-
-                                    }}>
-                                    Hapus
-                                </Button>
-                            </AnimateButton>
-                        </Stack>
-                    )
-                }
-                }
-        }
-      ];
+import {
+    Typography,
+    Card,
+    Pagination,
+    Button,
+    DialogActions,
+    DialogContentText,
+    DialogContent,
+    DialogTitle,
+    Dialog,
+  } from "@mui/material";
+  import React, { useCallback, useEffect, useState } from "react";
+  import { Link } from "react-router-dom";
+  import service from "../../../services/api";
+  
+  const Index = () => {
+    
+    const [loading, setLoading] = useState(true);
+      const [totalItems, setTotalItems] = useState(0);
+      const [wallet, setWallet] = useState([]);
+      const [totalPages, setTotalPages] = useState(0);
+      const [currentPage, setCurrentPage] = useState(1);
+      const [query, setQuery] = useState('');
+      const [open, setOpen] = useState(false);
+      const [id, setId] = useState(null);
+      const fetchData = useCallback(async () => {
+        const response = await service.getEwallet(query);
+        return response;
+      }, [query]);
+     
+      useEffect(() => {
+          fetchData().then(response => {
+            setWallet(response.data.wallet);
+            setTotalItems(response.data.totalItems);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(response.data.currentPage);
+            setLoading(false);
+          }).catch(error => {
+              console.log(error);
+              setLoading(false);
+          });
+      }, [query, fetchData]);
+  
+      const handlePagination = (event, value) => {
+        setQuery('?page=' + (value-1) + query);
+      };
       
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClickOpenDelete = () => {
-        apiService.deleteEwallet(id).then(res=>{
-            console.log(res);
-            setOpenDelete(false);
-            getData();
-            clearForm();
-        })
-    };
-    const handleCloseDelete = () => {
-        setOpenDelete(false);
-        clearForm();
-    };
-    const handleChangeNamaWallet = (event) => {
-        setNamaWallet(event.target.value);
-    }
-    const handleNoHp = (event) => {
-        setNoHp(event.target.value);
-    }
-    const handleChangeQrCode = (event) => {
-        setQrCode(event.target.value);
-    }
-    const handleClose = () => {
-        clearForm();
+      const handleSearch = (event) => {
+        setQuery('?nama_wallet=' + event.target.value);
+  
+      };
+      const handleClose = () => {
         setOpen(false);
     };
-    const handleSubmit = () => {
-        const formData = {
-            nama_wallet, nomor_hp, qr_code
-        }
-        if(isEdit===true){
-            apiService.updateEwallet(id, formData).then(res=>{
-                console.log(res);
-                setOpen(false);
-                getData();
-                clearForm();
-            })
-        }else {
-            apiService.addEwallet(formData).then(res=>{
-                console.log(res);
-                setOpen(false);
-                getData();
-                clearForm();
-            })
-        }
-        
-    }
-
-    const clearForm = () => {
-        setNamaWallet('');
-        setNoHp('');
-        setQrCode('');
-        setId('');
-        setIsEdit(false);
-    }
-    async function getData() {
-        await apiService.getEwallet().then((response) => {
-          // check if the data is populated
-          
-          setData(response.data.data);
-          // you tell it that you had the result
-          setLoadingData(false);
-          console.log('data', response.data);
-        });   
+      const handleDialogDelete = async (id) =>{
+        setOpen(true);
+        setId(id)
       }
-    React.useEffect(() => {
-        setData([]);
-        
-        if (loadingData) {
-          // if the result is not ready so you make the axios call
-          getData();
-        }
-      }, []);
+      const handleDelete = async () => {
+        await service.deleteEwallet(id);
+        fetchData().then(response => {
+          setWallet(response.data.wallet);
+          setTotalItems(response.data.totalItems);
+          setTotalPages(response.data.totalPages);
+          setCurrentPage(response.data.currentPage);
+          setLoading(false);
+          setOpen(false)
+        }).catch(error => {
+            console.log(error);
+            setLoading(false);
+            setOpen(false)
+        });
+      };
+      return (
+        <div>
+          <Typography variant="h3" component="h4">
+            E-Wallet
+          </Typography>
+          ;
+          <Card variant="elevation" sx={{ p: 3 }}>
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
+              <div className="col-span-1">
+                <div className="w-full flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                  <input
+                    type="text"
+                    placeholder="Cari nama akun"
+                    className="w-full focus:outline-none"
+                    name=""
+                    onChange={handleSearch}
+                    id=""
+                  />
+                  <button>
+                    <i className="fa fa-search" />
+                  </button>
+                </div>
+              </div>
+              <div className="col-span-1"></div>
+              <div className="col-span-1 flex justify-end">
+                <div>
+                  <Link
+                    to="/ewallet/add"
+                    className="px-8 py-2 rounded bg-green-600 text-white font-bold flex-1"
+                  >
+                    Tambah +
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <hr className="my-5" />
+            <table className="min-w-full leading-normal">
+              <thead>
+                <tr>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Nama Wallet
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Nomor HP
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    QR CODE
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {wallet.map((val) => {
+                  return (
+                    <tr key={val.id}>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{val.nama_wallet}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{val.nomor_hp}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{val.qr_code}</p>
+                      </td>
+                       <td className="px-5 flex gap-2 py-5 border-b border-gray-200 bg-white text-sm">
+                        <Link
+                          to={`/ewallet/edit/${val.id}`}
+                          className="px-4 py-2 rounded bg-green-600 text-white font-bold"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => {
+                            handleDialogDelete(val.id);
+                          }}
+                          className="px-4 py-2 rounded bg-red-600 text-white font-bold"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
     
-   
-    return (
-       <div>
-             <Stack spacing={2}>
-                <Grid container spacing={2}>
-                            <Grid item md={10}>
-                                <h1>Ewallet</h1>
-                            </Grid>
-                            <Grid item md={2}>
-                            <AnimateButton>
-                                <Button
-                                    disableElevation
-                                    fullWidth
-                                    size="md"
-                                    type="submit"
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={handleClickOpen}>
-                                    Tambah Ewallet
-                                </Button>
-                            </AnimateButton>
-                            </Grid>
-                </Grid>
-                <MUIDataTable
-                                elevation='0'
-                                title={"Ewallet List"}
-                                data={data}
-                                options={{
-                                    filterType: 'string',
-                                }}
-                                columns={columns}/>
-           </Stack>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Tambah Waller</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                    Tambahkan list wallet anda.
-                    </DialogContentText>
-                    <Divider sx={{
-                        mt:3, mb:3
-                    }} light />
-                    <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Nama Wallet"
-                    type="text"
-                    value={nama_wallet}
-                    fullWidth
-                    variant="outlined"
-                    onChange={handleChangeNamaWallet}
-                    />
-                    <TextField
-                    sx={{
-                        mt: 2
-                    }}
-                    margin="dense"
-                    id="name"
-                    label="Nomor Hp"
-                    type="text"
-                    value={nomor_hp}
-                    fullWidth
-                    onChange={handleNoHp}
-                    variant="outlined"
-                    />
-                    <TextField
-                    sx={{
-                        mt: 2
-                    }}
-                    margin="dense"
-                    id="name"
-                    label="QR Code"
-                    type="text"
-                    fullWidth
-                    value={qr_code}
-                    onChange={handleChangeQrCode}
-                    variant="outlined"
-                    />
-                    
-                </DialogContent>
-                <DialogActions sx={{mb: 1}}>
-                    <Button sx={{color: '#CC0000'}} onClick={handleClose}>Keluar</Button>
-                    <Button size="small" sx={{mr: 2}}
-                            type="submit"
-                            variant="contained" color="primary" onClick={handleSubmit}>Simpan</Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={openDelete}
-                onClose={handleCloseDelete}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-                </DialogTitle>
-                <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Apakah anda yakin ingin hapus data <b>{nama_wallet}</b>?.
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleCloseDelete}>Batal</Button>
-                <Button onClick={handleClickOpenDelete} autoFocus>
-                    Hapus
-                </Button>
-                </DialogActions>
-            </Dialog>
-       </div>
-    );
-}
-
-
-
-export default Index;
+            <div className="mt-3 flex md:flex-row flex-col items-center justify-between ">
+              <div className="block w-full md:w-auto md:flex flex-row items-start">
+                Result: &nbsp; <span className="font-medium">1-15</span> &nbsp;dari
+                &nbsp;<span className="font-medium">1000</span>&nbsp; data
+              </div>
+              <div className="mt-3 md:mt-0 block md:flex">
+                <Pagination onChange={handlePagination} count={totalPages} variant="outlined" shape="rounded" />
+              </div>
+            </div>
+          </Card>
+          <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+              >
+                  <DialogTitle id="alert-dialog-title">
+                  {"Hapus Wallet"}
+                  </DialogTitle>
+                  <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                      apakah anda yakin ingin Hapus Wallet ?
+                  </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                  <Button color="primary" onClick={handleClose}>Batal</Button>
+                  <Button  color="error" onClick={handleDelete} autoFocus>
+                      Hapus
+                  </Button>
+                  </DialogActions>
+              </Dialog>
+        </div>
+      );
+  };
+  
+  export default Index;
+  

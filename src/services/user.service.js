@@ -1,5 +1,5 @@
 import axios from 'axios';
-import authHeader from './auth-header';
+import authHeader from './auth-header.service';
 import {CHANGE_PASSWORD, CHANGE_PASSWORD_AND_USERNAME, DETAIL_PROFILE, UPDATE_PROFILE} from '../constants/URL';
 
 class UserService {
@@ -12,12 +12,12 @@ class UserService {
     }
 
     updateProfile(formdata){
-        return axios.post(DETAIL_PROFILE, formdata, {headers: authHeader()})
+        return axios.post(UPDATE_PROFILE, formdata, {headers: authHeader()})
     }
 
-    detailProfile(formdata){
-        return axios.post(UPDATE_PROFILE, formdata, {headers: authHeader()})
+    detailProfile(){
+        return axios.get(DETAIL_PROFILE, {headers: authHeader()})
     }
 }
 
-export default UserService()
+export default new UserService()

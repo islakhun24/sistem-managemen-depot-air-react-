@@ -23,7 +23,7 @@ const dashboard = {
             id: 'transk',
             title: 'Transaksi',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/transaksi',
             icon: icons.IconDashboard,
             breadcrumbs: false
         }

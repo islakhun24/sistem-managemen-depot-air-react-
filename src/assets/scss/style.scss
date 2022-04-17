@@ -3,6 +3,9 @@
 
 // third-party
 @import '~react-perfect-scrollbar/dist/css/styles.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 // ==============================|| LIGHT BOX ||============================== //
 .fullscreen .react-images__blanket {

@@ -15,7 +15,7 @@ const keuangan = {
             id: 'pemasukan',
             title: 'Pemasukan',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/pemasukan',
             icon: icons.IconDashboard,
             breadcrumbs: false
         },

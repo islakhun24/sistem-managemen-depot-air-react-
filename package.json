@@ -19,6 +19,7 @@
     "@mui/utils": "^5.0.1",
     "@mui/x-data-grid": "^5.5.1",
     "@mui/x-data-grid-generator": "^5.5.1",
+    "@mui/x-date-pickers": "^5.0.0-alpha.0",
     "@tabler/icons": "^1.39.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
@@ -52,7 +53,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
-    "sass": "^1.42.1"
+    "autoprefixer": "^10.4.4",
+    "postcss": "^8.4.12",
+    "sass": "^1.42.1",
+    "tailwindcss": "^3.0.23"
   },
   "scripts": {
     "start": "react-scripts start",
