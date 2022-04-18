@@ -1,8 +1,8 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
+import { IconDashboard, IconBuildingBank, IconArchive, IconUsers, IconWallet} from '@tabler/icons';
 
 // constant
-const icons = { IconDashboard };
+const icons = { IconDashboard,  IconBuildingBank, IconArchive, IconUsers, IconWallet};
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -16,7 +16,7 @@ const MenuUtama = {
             title: 'Banks',
             type: 'item',
             url: '/bank',
-            icon: icons.IconDashboard,
+            icon: icons.IconBuildingBank,
             breadcrumbs: false
         },
         {
@@ -24,7 +24,7 @@ const MenuUtama = {
             title: 'Barang',
             type: 'item',
             url: '/barang',
-            icon: icons.IconDashboard,
+            icon: icons.IconArchive,
             breadcrumbs: false
         },
         {
@@ -32,7 +32,7 @@ const MenuUtama = {
             title: 'Customer',
             type: 'item',
             url: '/customer',
-            icon: icons.IconDashboard,
+            icon: icons.IconUsers,
             breadcrumbs: false
         },
         {
@@ -40,7 +40,7 @@ const MenuUtama = {
             title: 'E-Wallet',
             type: 'item',
             url: '/ewallet',
-            icon: icons.IconDashboard,
+            icon: icons.IconWallet,
             breadcrumbs: false
         }
     ]

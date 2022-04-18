@@ -135,7 +135,7 @@ import {
                         <p className="text-gray-900 whitespace-no-wrap">{val.nomor_hp}</p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">{val.qr_code}</p>
+                      <img src={val.qr_code || 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg'} alt="qr_code" width="80px" height="80px" />
                       </td>
                        <td className="px-5 flex gap-2 py-5 border-b border-gray-200 bg-white text-sm">
                         <Link

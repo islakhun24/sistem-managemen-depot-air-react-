@@ -1,8 +1,8 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
+import { IconDashboard, IconArrowsLeftRight, IconCashBanknote } from '@tabler/icons';
 
 // constant
-const icons = { IconDashboard };
+const icons = { IconDashboard, IconArrowsLeftRight, IconCashBanknote };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -16,7 +16,7 @@ const keuangan = {
             title: 'Pemasukan',
             type: 'item',
             url: '/pemasukan',
-            icon: icons.IconDashboard,
+            icon: icons.IconCashBanknote,
             breadcrumbs: false
         },
         {
@@ -24,7 +24,7 @@ const keuangan = {
             title: 'Pengeluaran',
             type: 'item',
             url: '/pengeluaran',
-            icon: icons.IconDashboard,
+            icon: icons.IconArrowsLeftRight,
             breadcrumbs: false
         }
     ]

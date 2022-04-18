@@ -71,7 +71,7 @@ class ApiService {
     static deleteEwallet = (id) => {
         return axios.delete(`${EWALLET}/${id}`, {headers: authHeader()});
     }
-    getEwalletById = (id) => {
+    static getEwalletById = (id) => {
         return axios.get(`${EWALLET}/${id}`, {headers: authHeader()});
     }
 

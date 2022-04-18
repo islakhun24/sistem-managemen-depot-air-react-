@@ -3,109 +3,76 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import service from "../../../services/api";
 
-const EditEwallet = (props) =>{
-    const [nama_bank, setNamaBank] = useState('');
-    const [no_rek, setNoRek] = useState('');
-    const [code_bank, setCodeBank] = useState('');
-    const [nama_pemilik, setNamaPemilik] = useState('');
-    const { id } = useParams();
+const EditWallet = (props) =>{
+    const [nama_wallet, setNamaWallet] = useState('');
+    const [nomor_hp, setNomorHP] = useState('');
+    const [qr_code, setQrCode] = useState('');
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const { id } = useParams();
     useEffect(()=>{
-        service.getBankById(id).then(res=>{
+        service.getEwalletById(id).then(res=>{
             const {data} = res.data
-            console.log(data);
-            setNamaBank(data.nama_bank);
-            setNoRek(data.nomor_rekening);
-            setCodeBank(data.kode_bank);
-            setNamaPemilik(data.nama_akun);
+            setNamaWallet(data.nama_wallet)
+            setNomorHP(data.nomor_hp)
+            setQrCode(data.qr_code)
         }).catch(err=>{
             console.log(err);
             alert('error')
         })
-    }, [ id])
+    }, [id])
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleChangeNamaWallet = (e) =>{
+        setNamaWallet(e.target.value);
+    }
+
+    const handleNoHP = (e) =>{
+        setNomorHP(e.target.value);
+        setQrCode(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${e.target.value}`)
+    }
+    
 
     const handleSubmit = () => {
         const data = {
-            nama_bank: nama_bank,
-            nomor_rekening: no_rek,
-            kode_bank: code_bank,
-            nama_akun: nama_pemilik,
+            nama_wallet,
+            nomor_hp,
+            qr_code,
         }
-        service.updateBank(id, data).then(res=>{
+        service.updateEwallet(id, data).then(res=>{
             handleClose();
-            navigate('/bank');
+            navigate('/ewallet');
         }).catch(err=>{
             console.log(err);
         })
        
     }
-    const handleChangeNamaBank = (e) =>{
-        setNamaBank(e.target.value);
-    }
-
-    const handleChangeNoRek = (e) =>{
-        setNoRek(e.target.value);
-    }
-    
-    const handleChangeCodeBank = (e) =>{
-        setCodeBank(e.target.value);
-    }
-
-    const handleChangeNamaPemilik = (e) =>{
-        setNamaPemilik(e.target.value);
-    }
-
     return(
         <div>
             <Typography variant="h3" component="h4">
-                    Update Bank
+                    Tambah Ewallet
              </Typography>
              <p>Isilah form dibawah ini dengan benar</p>;
-             <div className="grid grid-cols-1 gap-3 md:gap-8 md:grid-cols-2">
-                <div className="col-span-1">
-                    <div className="w-full rounded-md p-6 bg-white flex flex-col">
-                    <div className="w-full text-left font-bold text-2xl text-black">
-                        { nama_bank || 'Nama Bank' }
-                    </div>
-                    <div className="w-full mt-8 text-center font-bold text-4xl text-black">
-                        { no_rek || '0000 0000 0000 0000' }
-                    </div>
-                    <div className="w-full mt-8 flex justify-between flex-row">
-                        <div className="flex flex-col space-y-1">
-                            <div className="text-base font semibold">Atas Nama</div>
-                            <div className="text-lg font-bold text-black"> { nama_pemilik || 'Nama Anda' }</div>
-                        </div>
-                        <div className="flex flex-col space-y-1">
-                        <div className="text-base font semibold">Kode Bank</div>
-                            <div className="text-lg font-bold text-black">{ code_bank || '000' }</div>
-                        </div>
-                    </div>
-                    </div>;
-                    <p>Catatan:</p>
-                    <p>- Pastikan data yang anda masukkan benar</p>
-                </div>
+             <div className="grid grid-cols-1 gap-3">
                 <div className="col-span-1 ">
                 <Card variant="elevation" sx={{p: 3 }}>
                  <div className='flex flex-row gap-3 items-center'>
                     <i className='fa fa-user'></i>
-                    <div className='font-bold text-black'>Form Bank</div>
+                    <div className='font-bold text-black'>Form Ewallet</div>
                  </div>
                  <Divider sx={{my:2}} light />
                  <div className='flex flex-col gap-4'>
-                    <TextField id="outlined-basic" fullWidth size='medium' label="Nama Bank" onChange={handleChangeNamaBank} value={nama_bank} variant="outlined" />
-                    <TextField id="outlined-basic" fullWidth size='medium' label="Nomor Rekening" onChange={handleChangeNoRek} value={no_rek} variant="outlined" />
-                    <TextField id="outlined-basic" onChange={handleChangeCodeBank} value={code_bank} fullWidth size='medium' label="Code Bank" variant="outlined" />
-                    <TextField id="outlined-basic" fullWidth size='medium' label="Atas Nama" onChange={handleChangeNamaPemilik} value={nama_pemilik} variant="outlined" />
-
+                    <TextField id="outlined-basic" fullWidth size='medium' label="Nama Wallet" onChange={handleChangeNamaWallet} value={nama_wallet} variant="outlined" />
+                    <TextField id="outlined-basic" fullWidth size='medium' label="Nomor HP" onChange={handleNoHP} value={nomor_hp} variant="outlined" />
+                    <p className="font-bold">
+                        QR CODE
+                    </p>
+                    <img src={qr_code || 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg'} alt="qr_code" width="200px" height="200px" />
                     <div className='flex flex-row justify-end gap-3'>
                         <button onClick={()=>() => navigate(-1)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
                             Batal
@@ -126,11 +93,11 @@ const EditEwallet = (props) =>{
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                {"Simpan bank"}
+                {"Simpan Ewallet"}
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    apakah anda yakin ingin menyimpan bank ?
+                    apakah anda yakin ingin menyimpan Ewallet ?
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -144,4 +111,4 @@ const EditEwallet = (props) =>{
     )
 }
 
-export default EditEwallet;
+export default EditWallet;

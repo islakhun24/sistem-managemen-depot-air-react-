@@ -1,8 +1,8 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
+import { IconDashboard, IconList } from '@tabler/icons';
 
 // constant
-const icons = { IconDashboard };
+const icons = { IconDashboard, IconList };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -24,7 +24,7 @@ const dashboard = {
             title: 'Transaksi',
             type: 'item',
             url: '/transaksi',
-            icon: icons.IconDashboard,
+            icon: icons.IconList,
             breadcrumbs: false
         }
     ]
