@@ -1,6 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header.service';
-import {CHANGE_PASSWORD, CHANGE_PASSWORD_AND_USERNAME, DETAIL_PROFILE, UPDATE_PROFILE} from '../constants/URL';
+import {CHANGE_PASSWORD, CHANGE_PASSWORD_AND_USERNAME, CHANGE_PHOTO, DETAIL_PROFILE, UPDATE_PROFILE} from '../constants/URL';
 
 class UserService {
     changePassword(formdata){
@@ -17,6 +17,19 @@ class UserService {
 
     detailProfile(){
         return axios.get(DETAIL_PROFILE, {headers: authHeader()})
+    }
+    async changePhoto(formdata){
+        
+        try {
+          const res = await axios.post(
+            CHANGE_PHOTO,
+            formdata,
+            {headers: authHeader()}
+          );
+          console.log(res);
+        } catch (ex) {
+          console.log(ex);
+        }
     }
 }
 

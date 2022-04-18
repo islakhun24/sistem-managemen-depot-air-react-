@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Card, Divider, IconButton, InputAdornment, OutlinedInput, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Service from '../../../services/user.service';
+import axios from 'axios';
 
 const Index = () => {
     const [username, setUsername] = useState('')
@@ -13,6 +14,40 @@ const Index = () => {
     const [alamat_perusahaan, setAlamat_perusahaan] = useState('')
     const [nohp_perusahaan, setNohp_perusahaan] = useState('')
     const [logo_perusahaan, setLogo_perusahaan] = useState('')
+    const [selectedFile, setSelectedFile] = useState()
+    const [preview, setPreview] = useState()
+
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreview(undefined)
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(selectedFile)
+        setPreview(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [selectedFile])
+
+    const onSelectFile = async e => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setSelectedFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+        setSelectedFile(e.target.files[0])
+        const formData = new FormData();
+        formData.append("profileImg", e.target.files[0]);
+        Service.changePhoto(formData).then(res=>{
+            console.log(res);
+        }, err=>{
+            console.log(err);
+        })
+
+    }
+
     useEffect(()=>{
         Service.detailProfile().then(res=>{
             const {data} = res.data
@@ -125,10 +160,16 @@ const Index = () => {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8'>
                 <div className='col-span-1'>
                     <Card sx={{p:2}}>
-                        <div className='relative flex items-center justify-center h-72 bg-gray-100 rounded-lg'>
+                        <div style={{
+                            backgroundImage: `url(${preview || logo_perusahaan})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            width: '100%',
+                            backgroundRepeat: 'no-repeat',
+                        }} className='relative flex items-center justify-center h-72 bg-gray-100 rounded-lg'>
                             <button className='relative flex items-center justify-center w-12 h-12 bg-green-300 rounded-full'>
                                 <i className='fa fa-edit text-white' ></i>
-                                <input className='absolute w-full h-full cursor-pointer opacity-0 bg-indigo-300 top-0 bottom-0 left-0 right-0' type="file" name="" id="" />
+                                <input onChange={onSelectFile} className='absolute w-full h-full cursor-pointer opacity-0 bg-indigo-300 top-0 bottom-0 left-0 right-0' type="file" name="" id="" />
                             </button>
                         </div>
                     </Card>

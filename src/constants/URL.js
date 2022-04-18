@@ -15,3 +15,5 @@ export const BARANG = BASE_URL + '/barang';
 export const CUSTOMER = BASE_URL + '/customer';
 export const EWALLET = BASE_URL + '/ewallet';
 export const PENGELUARAN = BASE_URL + '/pengeluaran';
+export const CHANGE_PHOTO = BASE_URL + '/user/change-photo';
+export const GET_PHOTO = BASE_URL + '/user/get-photo';
