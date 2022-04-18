@@ -4,7 +4,7 @@ const BASE_URL = "https://galon-api.herokuapp.com/api";
 export const REGISTER = BASE_URL + '/auth/signup';
 export const LOGIN = BASE_URL + '/auth/signin';
 export const CHANGE_PASSWORD = BASE_URL + '/user/change-password';
-export const CHANGE_PASSWORD_AND_USERNAME = BASE_URL + '/user/change-password-and-password';
+export const CHANGE_PASSWORD_AND_USERNAME = BASE_URL + '/user/change-username-and-password';
 export const UPDATE_PROFILE = BASE_URL + '/user/update-profile';
 export const DETAIL_PROFILE = BASE_URL + '/user/profile';
 
