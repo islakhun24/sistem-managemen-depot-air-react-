@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from 'services/auth-header.service';
-import {BANK, BARANG, CUSTOMER, EWALLET, PENGELUARAN} from '../constants/URL';
+import {BANK, BARANG, CUSTOMER, EWALLET, PENGELUARAN, TRANSAKSI} from '../constants/URL';
 
 class ApiService {
     //BANK
@@ -91,6 +91,11 @@ class ApiService {
     }
     static getPengeluaranById = (id) => {
         return axios.get(`${PENGELUARAN}/${id}`, {headers: authHeader()});
+    }
+
+    //TRANSAKSI
+    static getCustomerTransaksi = (nama_customer) => {
+        return axios.get(`${TRANSAKSI}/get_customer?nama_customer=${nama_customer}`, {headers: authHeader()});
     }
 }
 

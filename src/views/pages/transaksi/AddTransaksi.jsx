@@ -1,6 +1,6 @@
 import { Autocomplete, Card, Divider, Radio, TextField, Typography } from '@mui/material'
-import React from 'react'
-
+import React, { useEffect, useState, useCallback} from 'react'
+import service from '../../../services/api'
 const AddTransaksi = () => {
     const top100Films = [
         { title: 'The Shawshank Redemption', year: 1994 },
@@ -128,6 +128,21 @@ const AddTransaksi = () => {
         { title: '3 Idiots', year: 2009 },
         { title: 'Monty Python and the Holy Grail', year: 1975 },
       ];
+      const [customers, setCustomers] = useState([]);
+      const [nama_customer, setNamaCustomer] = useState('');
+
+      const fetchDataCustomer = useCallback(async () => {
+        const response = await service.getCustomerTransaksi(nama_customer);
+        return response;
+      }, [nama_customer]);
+      
+      useEffect(() => {
+            fetchDataCustomer().then(res => {
+                setCustomers(res.data);
+            }, err => {
+                console.log(err);
+            })
+      },[fetchDataCustomer])
     return (
         <div>
              <Typography variant="h3" component="h4">
@@ -145,7 +160,16 @@ const AddTransaksi = () => {
                      <Autocomplete
                             id="free-solo-demo"
                             freeSolo
-                            options={top100Films.map((option) => option.title)}
+                            value={nama_customer}
+                            onChange={(event, newValue) => {
+                                console.log(JSON.stringify(newValue, null, ' '));
+                            }}
+                            
+                            // inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                console.log(newInputValue);
+                            }}
+                            options={customers && customers.map( (option) =>  option.nama_customer)}
                             renderInput={(params) => <TextField {...params} label="Nama Customer" />}
                     />
                         

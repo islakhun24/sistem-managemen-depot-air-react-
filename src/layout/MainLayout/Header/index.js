@@ -31,7 +31,8 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 }}
             >
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-                    <LogoSection />
+                    <LogoSection /> 
+                    <span style={{marginLeft: 6, fontWeight: 'bold', color:'#000', fontSize: 16}}>PT. MEKASARI</span>
                 </Box>
                 <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
