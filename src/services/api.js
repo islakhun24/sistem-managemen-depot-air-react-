@@ -97,6 +97,19 @@ class ApiService {
     static getCustomerTransaksi = (nama_customer) => {
         return axios.get(`${TRANSAKSI}/get_customer?nama_customer=${nama_customer}`, {headers: authHeader()});
     }
+    static getBarangsTransaksi = (nama_barang) => {
+        return axios.get(`${TRANSAKSI}/get_barang?nama_barang=${nama_barang}`, {headers: authHeader()});
+    }
+    static getBanksTransaksi = (nama_bank) => {
+        return axios.get(`${TRANSAKSI}/get_bank?nama_bank=${nama_bank}`, {headers: authHeader()});
+    }
+    static getWalletTransaksi = (nama_wallet) => {
+        return axios.get(`${TRANSAKSI}/get_wallet?nama_wallet=${nama_wallet}`, {headers: authHeader()});
+    }
+
+    static postTransaksi = (formdata) => {
+        return axios.post(`${TRANSAKSI}/post`, formdata, {headers: authHeader()});
+    }
 }
 
 export default ApiService;
