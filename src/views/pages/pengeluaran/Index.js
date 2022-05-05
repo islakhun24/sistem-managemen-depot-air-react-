@@ -181,10 +181,9 @@ import {
           </table>
   
           <div className="mt-3 flex md:flex-row flex-col items-center justify-between ">
-            <div className="block w-full md:w-auto md:flex flex-row items-start">
-              Result: &nbsp; <span className="font-medium">1-15</span> &nbsp;dari
-              &nbsp;<span className="font-medium">1000</span>&nbsp; data
-            </div>
+          <div className='block w-full md:w-auto md:flex flex-row items-start'>
+                            Result: &nbsp;<span className='font-medium'>{totalItems || '0'}</span>&nbsp; data
+                        </div>
             <div className="mt-3 md:mt-0 block md:flex">
               <Pagination onChange={handlePagination} count={totalPages} variant="outlined" shape="rounded" />
             </div>

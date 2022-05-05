@@ -9,7 +9,7 @@ import {
   } from "@mui/material";
   import React, { useEffect, useState, useCallback } from "react";
   import service from "../../../services/api";
-  import { useNavigate } from "react-router";
+  import { useNavigate, useParams } from "react-router";
   import CustomAutocompleteCustomer from "ui-component/CustomAutocompleteCustomer";
   import CustomAutocompleteBarang from "ui-component/CustomAutocompleteBarang";
   import {
@@ -28,7 +28,7 @@ import {
   import CustomAutocompleteWallet from "ui-component/CustomAutocompleteWallet";
   
   const EditTransaksi = (props) => {
-    const {id} = props;
+    const {id} = useParams()
 
     const navigate = useNavigate();
     const [customers, setCustomers] = useState([]);
@@ -63,8 +63,64 @@ import {
     const [metode_pengiriman, setMetodePengiriman] = useState("");
     const [biaya_pengantaran, setBiayaPengantaran] = useState("");
     const [keterangan, setKeterangan] = useState("");
-  
-  
+    const fetchData = useCallback(async () => {
+        const response = await service.detailTransaksi(id);
+        return response;
+      }, [id]);
+
+    useEffect(()=>{
+        fetchData().then(response=>{
+            
+            const {data} = response
+            console.log('response', data);
+            setIdBarang(data?.barang?.id)
+            setIdCustomer(data?.customer?.id)
+            setPaymentMethods(data?.payment_methods)
+            setDate(data?.date)
+            setBankId(data?.bank?.id)
+            setWalletId(data?.ewallet?.id)
+            setMetodePengiriman(data?.metode_pengiriman);
+            setBiayaPengantaran(data?.biaya_pengantaran)
+            setKeterangan(data?.keterangan)
+            setAlamatCustomer(data?.customer?.alamat_customer);
+            setNamaCustomer(data?.customer?.nama_customer);
+            setNohpCustomer(data?.customer?.nohp_customer)
+            setJumlah(data?.jumlah)
+            setJumlahUang(data?.jumlah_uang)
+        })
+        const formData = {
+            id_barang,
+            idCustomer,
+            payment_methods,
+            date,
+            bank_id,
+            wallet_id,
+            metode_pengiriman,
+            biaya_pengantaran,
+            keterangan,
+            alamat_customer,
+            nama_customer,
+            nohp_customer,
+            jumlah,
+            jumlah_uang
+          };
+
+          console.log('formData', formData);
+    }, [fetchData, id_barang,
+        idCustomer,
+        payment_methods,
+        date,
+        bank_id,
+        wallet_id,
+        metode_pengiriman,
+        biaya_pengantaran,
+        keterangan,
+        alamat_customer,
+        nama_customer,
+        nohp_customer,
+        jumlah,
+        jumlah_uang])
+
     const handleClickOpen = () => {
       setOpen(true);
     };
@@ -294,7 +350,7 @@ import {
                 id="outlined-basic"
                 onChange={handleJumlah}
                 fullWidth
-                defaultValue={jumlah}
+                value={jumlah}
                 size="medium"
                 label="Jumlah Barang"
                 variant="outlined"

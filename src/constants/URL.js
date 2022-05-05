@@ -19,3 +19,4 @@ export const CHANGE_PHOTO = BASE_URL + '/user/change-photo';
 export const GET_PHOTO = BASE_URL + '/user/get-photo';
 
 export const TRANSAKSI = BASE_URL + '/transaksi';
+export const DASHBOARD = BASE_URL + '/dashboard';

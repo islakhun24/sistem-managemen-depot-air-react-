@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
+import service from '../../../services/api'
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import { useEffect, useState } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -41,7 +43,13 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeLightCard = ({ isLoading }) => {
     const theme = useTheme();
-
+    const [pengeluaran, setPengeluaran]= useState(0);
+    useEffect(()=>{
+        service.getPengeluaranDashboard().then(res=>{
+            const {data} = res.data
+            setPengeluaran(data)
+        })
+    },[pengeluaran])
     return (
         <>
             {isLoading ? (
@@ -70,7 +78,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={<Typography variant="h4">$203k</Typography>}
+                                    primary={<Typography variant="h4">Rp{pengeluaran},-</Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"

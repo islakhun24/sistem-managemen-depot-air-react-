@@ -9,7 +9,7 @@ const CustomAutocompleteCustomer = ({ options, onChange, onInputChange, defaultV
         onChange={onChange}
         defaultValue={defaultValue}
         getOptionLabel={option => option.nama || ''}
-        renderInput={props => <TextField {...props} fullWidth  label={'Nama Customer'} />}
+        renderInput={props => <TextField  {...props} fullWidth  label={'Nama Customer'} />}
       />
     );
   }

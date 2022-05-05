@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import service from '../../../services/api'
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -68,7 +69,20 @@ const EarningCard = ({ isLoading }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+    const [pengeluaran, setPengeluaran]= useState(0);
+    useEffect(()=>{
+        service.getPengeluaranDashboard().then(res=>{
+            const {data} = res.data
+            setPengeluaran(data)
+        })
+    },[pengeluaran])
+    const [pemasukan, setPemasukan]= useState(0);
+    useEffect(()=>{
+        service.getPPemasukanDashboard().then(res=>{
+            const {data} = res.data
+            setPemasukan(data)
+        })
+    },[pemasukan])
     return (
         <>
             {isLoading ? (
@@ -101,7 +115,7 @@ const EarningCard = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            $500.00
+                                            Rp. {parseInt(pemasukan)-parseInt(pengeluaran)},-
                                         </Typography>
                                     </Grid>
                                     <Grid item>

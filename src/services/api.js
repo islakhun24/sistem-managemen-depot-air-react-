@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from 'services/auth-header.service';
-import {BANK, BARANG, CUSTOMER, EWALLET, PENGELUARAN, TRANSAKSI} from '../constants/URL';
+import {BANK, BARANG, CUSTOMER, EWALLET, PENGELUARAN, TRANSAKSI, DASHBOARD} from '../constants/URL';
 
 class ApiService {
     //BANK
@@ -109,6 +109,34 @@ class ApiService {
 
     static postTransaksi = (formdata) => {
         return axios.post(`${TRANSAKSI}/post`, formdata, {headers: authHeader()});
+    }
+
+    static detailTransaksi = (id) => {
+        return axios.get(`${TRANSAKSI}/detail/${id}`, {headers: authHeader()});
+    }
+
+    static getTransaksi = (query) => {
+        return axios.get(`${TRANSAKSI}/get${query}`, {headers: authHeader()});
+    }
+    static getPengeluaranDashboard = () => {
+        return axios.get(`${DASHBOARD}/total_pengeluaran`, {headers: authHeader()});
+    }
+    static getPPemasukanDashboard = () => {
+        return axios.get(`${DASHBOARD}/total_pemasukan`, {headers: authHeader()});
+    }
+
+    static getTotalTransaksiDashboard = () => {
+        return axios.get(`${DASHBOARD}/total_transaksi`, {headers: authHeader()});
+    }
+
+    static changeStatusTransaksi= (id) => {
+        return axios.put(`${TRANSAKSI}/update_status/${id}`,{}, {headers: authHeader()});
+    }
+    static deleteTransaksi= (id) => {
+        return axios.delete(`${TRANSAKSI}/delete/${id}`, {headers: authHeader()});
+    }
+    static chartDashboard= () => {
+        return axios.get(`${DASHBOARD}/chart`, {headers: authHeader()});
     }
 }
 

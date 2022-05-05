@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
+import service from '../../../services/api'
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Grid, MenuItem, TextField, Typography } from '@mui/material';
@@ -50,44 +51,36 @@ const TotalGrowthBarChart = ({ isLoading }) => {
     const primaryDark = theme.palette.primary.dark;
     const secondaryMain = theme.palette.secondary.main;
     const secondaryLight = theme.palette.secondary.light;
+    const [newChartData, setnewChartData] = useState(chartData)
+    const [category, setCategory] = useState([])
+    const [pemasukan, setPemasukan]= useState([])  
+    const [pengeluaran, setPengeluaran]= useState([])  
+    const fetchData = useCallback(async () => {
+        const response = await service.chartDashboard();
+        return response;
+      }, []);
 
-    useEffect(() => {
-        const newChartData = {
-            ...chartData.options,
-            colors: [primary200, primaryDark, secondaryMain, secondaryLight],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
-                    }
+      useEffect(() => {
+        fetchData().then(res=>{
+            console.log(res.data);
+            const {data} = res
+            setPemasukan(data?.pemasukan)
+            setPengeluaran(data?.pengeluaran)
+            chartData.series = [
+                {
+                    name: 'Pemasukan',
+                    data: data?.pemasukan,
+                    color: '#1e88e5'
+                },
+                {
+                    name: 'Pengeluaran',
+                    data: data?.pengeluaran,
+                    color: '#c62828'
                 }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: grey200
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                labels: {
-                    colors: grey500
-                }
-            }
-        };
-
-        // do not load chart when loading
-        if (!isLoading) {
-            ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
-        }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
-
+            ]
+        })
+      },[fetchData])
+    
     return (
         <>
             {isLoading ? (
@@ -100,14 +93,14 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">Total Growth</Typography>
+                                            <Typography variant="subtitle2">Grafik Keuangan</Typography>
                                         </Grid>
                                         <Grid item>
-                                            <Typography variant="h3">$2,324.00</Typography>
+                                            {/* <Typography variant="h3">$2,324.00</Typography> */}
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item>
+                                {/* <Grid item>
                                     <TextField
                                         id="standard-select-currency"
                                         select
@@ -120,7 +113,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>

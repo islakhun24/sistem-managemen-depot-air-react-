@@ -24,8 +24,8 @@ const EditEwallet = Loadable(lazy(() => import('views/pages/ewallet/EditEwallet.
 const Pengeluaran = Loadable(lazy(() => import('views/pages/pengeluaran/Index.js')));
 const Pemasukan = Loadable(lazy(() => import('views/pages/pemasukan/Index.js')));
 const Transaksi = Loadable(lazy(() => import('views/pages/transaksi/Index.js')));
-const EditTransaksi = Loadable(lazy(() => import('views/pages/transaksi/EditTransaksi.js')));
-const DetailTransaksi = Loadable(lazy(() => import('views/pages/transaksi/DetailTransaksi.js')));
+const EditTransaksi = Loadable(lazy(() => import('views/pages/transaksi/EditTransaksi.jsx')));
+const DetailTransaksi = Loadable(lazy(() => import('views/pages/transaksi/DetailTransaksi.jsx')));
 const AddTransaksi = Loadable(lazy(() => import('views/pages/transaksi/AddTransaksi')));
 const Profile = Loadable(lazy(() => import('views/pages/profile/Index')));
 const AddPengeluaran = Loadable(lazy(()=> import('views/pages/pengeluaran/AddPengeluaran')));

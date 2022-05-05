@@ -46,7 +46,6 @@ const AddTransaksi = () => {
 
   //BANKS
   const [nama_bank, setNamaBank] = useState("");
-  const [jumlah_uang, setJumlahUang] = useState("");
   //Wallet
   const [nama_wallet, setNamaWallet] = useState("");
 
@@ -151,11 +150,11 @@ const AddTransaksi = () => {
       nama_customer,
       nohp_customer,
       jumlah,
-      jumlah_uang
     };
     service.postTransaksi(formData).then(response=>{
-      console.log(response)
+      navigate(`/transaksi/detail/${response.data.id}`);
     })
+    
     // const response =  service.post('/transaksi', formData)
   };
 
@@ -299,39 +298,7 @@ const AddTransaksi = () => {
             />
           </div>
         </div>
-        {
-          jumlah > 0 ? (
-            <>
-            <Divider sx={{ my: 2 }} light />
-            <div className='flex flex-col'>
-              <div className="flex flex-row justify-between items-center">
-                <div>Nama Barang</div>
-                <div>{nama_barang || '' }</div>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div>Harga Barang</div>
-                <div>{harga_barang || '' }</div>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div>Total Harga</div>
-                <div>{`${harga_barang * jumlah} (${harga_barang} x ${jumlah})`}</div>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div>Jumlah Uang</div>
-                <div>{jumlah_uang || '' }</div>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div></div>
-                <div>--------------------------- -</div>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div>Kembalian</div>
-                <div>{jumlah_uang - (harga_barang * jumlah)}</div>
-              </div>
-            </div>
-            </>
-          ): null
-        }
+
       </Card>
       ;
       <Card variant="elevation" sx={{ p: 3 }}>
@@ -387,21 +354,6 @@ const AddTransaksi = () => {
                 onInputChange={(e) => {
                   setNamaWallet(e.target.value);
                 }}
-              />
-            </>
-          ) : payment_methods === "cash" ? (
-            <>
-              <Divider sx={{ my: 2 }} light />
-              <TextField
-                id="outlined-basic"
-                onChange={(e) => {
-                  setJumlahUang(e.target.value);
-                }}
-                fullWidth
-                value={jumlah_uang}
-                size="medium"
-                label="Jumlah Uang"
-                variant="outlined"
               />
             </>
           ) : null}

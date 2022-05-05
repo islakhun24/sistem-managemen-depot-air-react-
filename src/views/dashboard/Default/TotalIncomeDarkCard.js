@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import service from '../../../services/api'
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -10,6 +11,7 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import { useEffect, useState } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -43,7 +45,13 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeDarkCard = ({ isLoading }) => {
     const theme = useTheme();
-
+    const [pemasukan, setPemasukan]= useState(0);
+    useEffect(()=>{
+        service.getPPemasukanDashboard().then(res=>{
+            const {data} = res.data
+            setPemasukan(data)
+        })
+    },[pemasukan])
     return (
         <>
             {isLoading ? (
@@ -74,7 +82,7 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            $203k
+                                            Rp{pemasukan||'0'},-
                                         </Typography>
                                     }
                                     secondary={

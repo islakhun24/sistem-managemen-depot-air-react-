@@ -11,15 +11,19 @@ import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
-
 // ==============================|| DEFAULT DASHBOARD ||============================== //
+import service from '../../../services/api'
 
 const Dashboard = () => {
     const [isLoading, setLoading] = useState(true);
+    
     useEffect(() => {
         setLoading(false);
+        service.chartDashboard().then(data=>{
+            console.log(data);
+        })
     }, []);
-
+   
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>

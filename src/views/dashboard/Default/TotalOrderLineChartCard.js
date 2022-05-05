@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
 
 import ChartDataMonth from './chart-data/total-order-month-line-chart';
 import ChartDataYear from './chart-data/total-order-year-line-chart';
+import service from '../../../services/api'
 
 // assets
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
@@ -65,6 +66,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalOrderLineChartCard = ({ isLoading }) => {
     const theme = useTheme();
+    const [transaksi, setTransaksi] = useState(0)
+    useEffect(()=>{
+        service.getTotalTransaksiDashboard().then(res=>{
+            const {data} = res.data
+            setTransaksi(data)
+        })
+    },[transaksi])
+
 
 
     return (
@@ -100,7 +109,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                         <Grid container alignItems="center">
                                             <Grid item>
                                             <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        108
+                                                        {transaksi||'0'}
                                             </Typography>
                                             </Grid>
                                             <Grid item>
@@ -123,7 +132,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Total Order
+                                                    Total Transaksi
                                                 </Typography>
                                             </Grid>
                                         </Grid>
