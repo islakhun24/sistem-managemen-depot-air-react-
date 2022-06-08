@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { Card, Typography, Divider, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -29,15 +30,39 @@ const DetailTransaksi = (props) =>{
         })
     }, [id])
 
-    const sendWhatsappBank =()=>{
+    const sendWhatsapp =()=>{
+        let pengiriman = transaksi?.metode_pengiriman === 'di_antar' ?  'Diantar' : 'Ambil Sendiri'
+        let payment = transaksi?.payment_methods === 'bank_transfer' ? 'Bank Transfer': (
+            transaksi?.payment_methods === 'e_wallet' ? 'E-Wallet' : (
+                transaksi?.payment_methods === 'cash' ? 'Cash' : 'Tidak ada'
+            ))
 
-    }
-    const sendWhatsappWallet =()=>{
+        const text = `Order From Depot Air Minum Mekarsari\n
+        ${new Date(transaksi.date).getTime()} (${transaksi.date.split('T')[0]})\n
+        \n
+
+        Nama customer:\n
+        ${transaksi.customer.nama_customer}\n
+        \n
+        Barang : \n
+        Nama Barang:${transaksi.barang.nama_barang}\n
+        Satuan:${transaksi.barang.satuan}\n
+        Harga @barang:${transaksi.barang.harga}\n
+        Jumlah:${transaksi.jumlah}\n
+        Subtotal : Rp${transaksi?.total_harga}\n
+        \n
+        Metode Pengiriman : ${pengiriman}\n
+        Biaya Antar : Rp${transaksi?.biaya_pengantaran ? 'Rp.' +transaksi?.biaya_pengantaran: "-"}\n
         
-    }
-    const sendWhatsappCash =()=>{
+        Payment : ${payment}\n
         
+
+        Total Biaya: Rp${transaksi?.total_biaya}\n
+        Terima kasih sudah berbelanja.\n`
+
+        location.href=`https://api.whatsapp.com/send?text=${text}&phone=${transaksi.customer.nohp_customer}`
     }
+  
     return (
         <>
             <Typography variant="h3" component="h4">
@@ -217,18 +242,7 @@ const DetailTransaksi = (props) =>{
                     Edit
                 </button> */}
                 <button
-                    onClick={()=>{
-                        if(transaksi?.payment_methods === 'bank_transfer'){
-                          sendWhatsappBank()
-                        }
-                        if(transaksi?.payment_methods === 'e_wallet'){
-                            sendWhatsappWallet()
-
-                        }
-                        if(transaksi?.payment_methods === 'cash'){
-                            sendWhatsappCash()
-                        }
-                    }}
+                    onClick={sendWhatsapp}
                     className="px-3 flex-auto md:px-16 w-auto py-2 rounded bg-green-600 text-white font-bold"
                 >
                     Kirim Whatsapp
