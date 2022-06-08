@@ -28,6 +28,16 @@ const DetailTransaksi = (props) =>{
             setTransaksi(response.data)
         })
     }, [id])
+
+    const sendWhatsappBank =()=>{
+
+    }
+    const sendWhatsappWallet =()=>{
+        
+    }
+    const sendWhatsappCash =()=>{
+        
+    }
     return (
         <>
             <Typography variant="h3" component="h4">
@@ -207,7 +217,18 @@ const DetailTransaksi = (props) =>{
                     Edit
                 </button> */}
                 <button
-                    onClick={null}
+                    onClick={()=>{
+                        if(transaksi?.payment_methods === 'bank_transfer'){
+                          sendWhatsappBank()
+                        }
+                        if(transaksi?.payment_methods === 'e_wallet'){
+                            sendWhatsappWallet()
+
+                        }
+                        if(transaksi?.payment_methods === 'cash'){
+                            sendWhatsappCash()
+                        }
+                    }}
                     className="px-3 flex-auto md:px-16 w-auto py-2 rounded bg-green-600 text-white font-bold"
                 >
                     Kirim Whatsapp

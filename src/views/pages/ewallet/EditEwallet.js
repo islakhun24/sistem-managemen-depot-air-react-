@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router";
 import service from "../../../services/api";
 
 const EditWallet = (props) =>{
+    const navigate = useNavigate();
     const [nama_wallet, setNamaWallet] = useState('');
     const [nomor_hp, setNomorHP] = useState('');
     const [qr_code, setQrCode] = useState('');
     const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -55,7 +55,7 @@ const EditWallet = (props) =>{
     return(
         <div>
             <Typography variant="h3" component="h4">
-                    Tambah Ewallet
+                    Edit Ewallet
              </Typography>
              <p>Isilah form dibawah ini dengan benar</p>;
              <div className="grid grid-cols-1 gap-3">
@@ -74,7 +74,7 @@ const EditWallet = (props) =>{
                     </p>
                     <img src={qr_code || 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg'} alt="qr_code" width="200px" height="200px" />
                     <div className='flex flex-row justify-end gap-3'>
-                        <button onClick={()=>() => navigate(-1)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
+                        <button onClick={() => navigate(-1)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
                             Batal
                         </button>
                         <button onClick={handleClickOpen} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>

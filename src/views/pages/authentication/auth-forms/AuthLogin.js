@@ -142,6 +142,7 @@ const FirebaseLogin = ({ ...others }) => {
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
                                 <Button
+                                    className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-3 px-4 rounded"
                                     disableElevation
                                     disabled={isSubmitting}
                                     fullWidth

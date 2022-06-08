@@ -76,8 +76,14 @@ class ApiService {
     }
 
     //Pengeluaran
-    static getPengeluaran = (query) => {
-        return axios.get(`${PENGELUARAN}${query}`, {headers: authHeader()});
+    static getPengeluaran = (formdata) => {
+        return axios.post(`${PENGELUARAN}/list`, formdata,{headers: authHeader()});
+    }
+    static downloadPengeluaran = (formdata) => {
+        return axios.post(`${PENGELUARAN}/download`, formdata,{headers: authHeader(), responseType: 'blob'});
+    }
+    static downloadTransaksi = (formdata) => {
+        return axios.post(`${TRANSAKSI}/download`, formdata,{headers: authHeader(), responseType: 'blob'});
     }
     static addPengeluaran = (data) => {
         console.log(authHeader());
@@ -115,8 +121,8 @@ class ApiService {
         return axios.get(`${TRANSAKSI}/detail/${id}`, {headers: authHeader()});
     }
 
-    static getTransaksi = (query) => {
-        return axios.get(`${TRANSAKSI}/get${query}`, {headers: authHeader()});
+    static getTransaksi = (formdata) => {
+        return axios.post(`${TRANSAKSI}/list`, formdata ,{headers: authHeader()});
     }
     static getPengeluaranDashboard = () => {
         return axios.get(`${DASHBOARD}/total_pengeluaran`, {headers: authHeader()});
@@ -133,7 +139,7 @@ class ApiService {
         return axios.put(`${TRANSAKSI}/update_status/${id}`,{}, {headers: authHeader()});
     }
     static deleteTransaksi= (id) => {
-        return axios.delete(`${TRANSAKSI}/delete/${id}`, {headers: authHeader()});
+        return axios.delete(`$TRANSAKSI}/delete/${id}`, {headers: authHeader()});
     }
     static chartDashboard= () => {
         return axios.get(`${DASHBOARD}/chart`, {headers: authHeader()});

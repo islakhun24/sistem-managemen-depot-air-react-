@@ -54,9 +54,9 @@ const PopularCard = ({ isLoading }) => {
             ) : (
                 <MainCard content={false}>
                     <CardContent>
-                        <Grid container spacing={gridSpacing}>
+                        <Grid container spacing={gridSpacing} direction="row">
                             <Grid item xs={12}>
-                                <Grid container alignContent="center" justifyContent="space-between">
+                                <Grid container alignContent="center" justifyContent="space-between"  direction="row">
                                     <Grid item>
                                         <Typography variant="h4">Riwayat Transaksi</Typography>
                                     </Grid>
@@ -68,17 +68,17 @@ const PopularCard = ({ isLoading }) => {
                                 {
                                      transaksi?.map((val, i)=>{
                                         return (
-                                            <>
-                                            <Grid key={i} container direction="column">
+                                            <div key={i}>
+                                            <Grid  container direction="column">
                                     <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
+                                        <Grid container alignItems="center" justifyContent="space-between"  direction="row">
                                             <Grid item>
                                                 <Typography variant="subtitle1" color="inherit">
                                                     {val?.barang?.nama_barang}
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Grid container alignItems="center" justifyContent="space-between">
+                                                <Grid container alignItems="center" justifyContent="space-between" column>
                                                     <Grid item>
                                                         <Typography variant="subtitle1" color="inherit">
                                                             Rp {val?.total_biaya},-
@@ -103,7 +103,7 @@ const PopularCard = ({ isLoading }) => {
                                     </Grid>
                                 </Grid>
                                 <Divider sx={{ my: 1.5 }} />
-                                            </>
+                                            </div>
                                         )
                                     })
                                 }

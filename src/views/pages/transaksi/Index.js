@@ -6,28 +6,63 @@ import service from "../../../services/api";
 import { useNavigate } from "react-router";
 const Index = () => {
     const navigate = useNavigate();
+    const [tanggalSampaiDownload, setTanggalSampaiDownload] = React.useState("");
+    const [tanggalDariDownload, setTanggalDariDownload] = React.useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [totalItems, setTotalItems]= useState(0);
+    const [openPrint, setOpenPrint] = useState(false);
+    const [page, setPage] = useState("");
     const [totalPages, setTotalPages]= useState(0);
     const [transaksi, setTransaksi]= useState([])
     const [query, setQuery] = useState("")
+    const [namaCustomer, setNamaCustomer] = useState("")
+    const [tanggalDari, setTanggalDari] = useState("")
+    const [tanggalSampai, setTanggalSampai] = useState("")
     const [id, setId]= useState("")
    const [open, setOpen] = useState(false)
-    const handlePagination = (event, value) => {
-        setQuery('?page=' + (value-1) + query);
+    const handlePagination = (event) => {
+        setPage(event.target.value);
+        let fromDate = null;
+        let toDate = null;
+    
+        if (tanggalDari) {
+          fromDate = tanggalDari.split("/").reverse().join("-");
+        }
+    
+        if (tanggalSampai) {
+          toDate = tanggalSampai.split("/").reverse().join("-");
+        }
+    
+        const formdata = {
+          page: page,
+          size: 15,
+          nama_customer: namaCustomer,
+          fromDate,
+          toDate,
+        };
+    
+        fetchData(formdata)
+          .then((response) => {
+            setTransaksi(response.data.transaksi);
+            setTotalItems(response.data.totalItems);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(response.data.currentPage);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
       const handleClose = () => {
         setOpen(false);
     };
-      const handleSearch = (event) => {
-        setQuery('?nama_customer=' + event.target.value);
-  
-      };
+     
       const handleDialogOpen = async (id) =>{
         setOpen(true);
         setId(id)
       }
-
+      const openPrintHandle = (e) => {
+        setOpenPrint(true);
+      };
       const handleDialogOpenSubmit = async () => {
         await service.changeStatusTransaksi(id);
         await fetchData().then(res=>{
@@ -39,11 +74,93 @@ const Index = () => {
         })
         setOpen(false);
       }
-
-    const fetchData = useCallback(async () => {
-        const response = await service.getTransaksi(query);
+      const handleSubmit = (e) => {
+        let fromDate = null;
+        let toDate = null;
+    
+        if (tanggalDari) {
+          fromDate = tanggalDari.split("/").reverse().join("-");
+        }
+    
+        if (tanggalSampai) {
+          toDate = tanggalSampai.split("/").reverse().join("-");
+        }
+    
+        const formdata = {
+          page: page,
+          size: 15,
+          nama_customer: namaCustomer,
+          fromDate,
+          toDate,
+        };
+    
+        fetchData(formdata)
+          .then((response) => {
+            setTransaksi(response.data.transaksi);
+            setTotalItems(response.data.totalItems);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(response.data.currentPage);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      const handleSubmitDownload = (e) => {
+        let fromDate = null;
+        let toDate = null;
+    
+        if (tanggalDariDownload) {
+          fromDate = tanggalDariDownload.split("/").reverse().join("-");
+        }
+    
+        if (tanggalSampaiDownload) {
+          toDate = tanggalSampaiDownload.split("/").reverse().join("-");
+        }
+        const formdata = {
+          toDate,
+          fromDate,
+        };
+        service
+          .downloadTransaksi(formdata)
+          .then((response) => {
+            setTanggalDariDownload(false);
+            setTanggalSampaiDownload(false);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+    
+            link.href = url;
+            link.setAttribute("download", `${Date.now()}.xlsx`);
+    
+            document.body.appendChild(link);
+            link.click();
+    
+            link.remove();
+            setOpenPrint(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      const handleClear = (e) => {
+        setNamaCustomer("");
+        setTanggalDari("");
+        setTanggalSampai("");
+        setPage(0);
+        fetchData(null)
+          .then((response) => {
+            setTransaksi(response.data.transaksi);
+            setTotalItems(response.data.totalItems);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(response.data.currentPage);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+    const fetchData = useCallback(async (formdata) => {
+        const response = await service.getTransaksi(formdata);
         return response;
-      }, [query]);
+      }, []);
       
         useEffect(()=>{
             fetchData().then(res=>{
@@ -60,24 +177,97 @@ const Index = () => {
                     Transaksi
                 </Typography>;
                 <Card variant="elevation" sx={{p: 3 }}>
-                    <div className='grid md:grid-cols-3 grid-cols-1 gap-8'>
-                        <div className='col-span-1'>
-                            <div className='w-full flex flex-row gap-2 rounded border border-gray-200 px-3 py-2'>
-                                <input type="text" onChange={handleSearch} placeholder='Cari nama customer' className='w-full focus:outline-none' name="" id="" />
-                                <button>
-                                    <i className='fa fa-search'/>
-                                </button>
-                            </div>
-                        </div>
-                        <div className='col-span-1'>
-
-                        </div>
-                        <div className='col-span-1 flex justify-end'>
-                             <div>
-                             <Link to="/transaksi/add" className='px-8 py-2 rounded bg-green-600 text-white font-bold flex-1'>Tambah +</Link>
-                            </div>
-                        </div>
-                    </div>
+                <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
+          <div className="col-span-1 items-center md:col-span-2 grid-col-1 gap-3 grid md:grid-cols-3">
+            <div className="col-span-1 items-center">
+              <div className="w-full items-center flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                <input
+                  type="text"
+                  placeholder="Cari nama customer"
+                  className="w-full focus:outline-none"
+                  name=""
+                  onChange={(e) => {
+                    setNamaCustomer(e.target.value);
+                  }}
+                  id=""
+                />
+                <button>
+                  <i className="fa fa-search" />
+                </button>
+              </div>
+            </div>
+            <div className="col-span-1 items-center md:col-span-2 ">
+              <div className="col-span-1 items-center gap-3 grid md:grid-cols-2 grid-cols-1">
+                <div className="col-span-1">
+                  <div className="w-full items-center flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                    <input
+                      pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                      type="date"
+                      placeholder="Dari"
+                      className="w-full focus:outline-none"
+                      name=""
+                      onChange={(e) => {
+                        setTanggalDari(e.target.value);
+                      }}
+                      value={tanggalDari}
+                      id=""
+                    />
+                  </div>
+                </div>
+                <div className="col-span-1 items-center">
+                  <div className="w-full items-center flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                    <input
+                      pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                      type="date"
+                      placeholder="Sampai"
+                      className="w-full focus:outline-none"
+                      name=""
+                      onChange={(e) => {
+                        setTanggalSampai(e.target.value);
+                      }}
+                      value={tanggalSampai}
+                      id=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-span-1 items-center flex justify-end">
+            <div className="flex w-full flex-col md:flex-row gap-3">
+              <button
+                onClick={handleClear}
+                className="px-16 py-2 w-full rounded bg-red-600 text-white font-bold flex-1"
+              >
+                Clear
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-16 py-2 w-full rounded bg-blue-600 text-white font-bold flex-1"
+              >
+                Cari
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <hr className="my-5" />
+          <div className="flex md:flex-row flex-col gap-3 w-full mt-3 items-end justify-between">
+            <button
+              onClick={openPrintHandle}
+              to="/pengeluaran/add"
+              className="px-8 py-2 w-full items-center justify-center md:w-auto text-center rounded bg-yellow-600 text-white font-bold"
+            >
+              Cetak / Download
+            </button>
+            <Link
+              to="/pengeluaran/add"
+              className="px-8 py-2 w-full items-center justify-center md:w-auto text-center rounded bg-green-600 text-white font-bold"
+            >
+              Tambah +
+            </Link>
+          </div>
+        </div>
                     <hr className='my-5' />
                     
                     <div className='grid grid-cols-1 md:grid-cols-3 mt-8 gap-4'>
@@ -184,6 +374,65 @@ const Index = () => {
                 </Button>
                 </DialogActions>
             </Dialog>
+            <form className="w-1/2">
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={openPrint}
+          onClose={() => setOpenPrint(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"DOWNLOAD FILE"}</DialogTitle>
+          <DialogContent>
+            <div>
+              <div className="md:flex-row flex-col gap-3 w-full">
+                <div className="col-span-1 w-full">
+                  <p className="font-bold">Dari</p>
+                  <div className="w-full mt-2 items-center flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                    <input
+                      pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                      type="date"
+                      placeholder="Sampai"
+                      className="w-full focus:outline-none"
+                      name="fromDate"
+                      value={tanggalDariDownload}
+                      onChange={(e) => {
+                        setTanggalDariDownload(e.target.value);
+                      }}
+                      id="fromDate"
+                    />
+                  </div>
+                </div>
+                <br />
+                <div className="col-span-1  w-full">
+                  <p className="font-bold">Sampai</p>
+                  <div className="w-full mt-2 items-center flex flex-row gap-2 rounded border border-gray-200 px-3 py-2">
+                    <input
+                      pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
+                      type="date"
+                      placeholder="Sampai"
+                      onChange={(e) => {
+                        setTanggalSampaiDownload(e.target.value);
+                      }}
+                      value={tanggalSampaiDownload}
+                      className="w-full focus:outline-none"
+                      name="toDate"
+                      id="toDate"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenPrint(false)}>Batal</Button>
+            <Button onClick={handleSubmitDownload} autoFocus>
+              Download
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </form>
             </div>
         );
 }
