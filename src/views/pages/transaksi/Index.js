@@ -255,13 +255,12 @@ const Index = () => {
           <div className="flex md:flex-row flex-col gap-3 w-full mt-3 items-end justify-between">
             <button
               onClick={openPrintHandle}
-              to="/pengeluaran/add"
               className="px-8 py-2 w-full items-center justify-center md:w-auto text-center rounded bg-yellow-600 text-white font-bold"
             >
               Cetak / Download
             </button>
             <Link
-              to="/pengeluaran/add"
+              to="/transaksi/add"
               className="px-8 py-2 w-full items-center justify-center md:w-auto text-center rounded bg-green-600 text-white font-bold"
             >
               Tambah +
