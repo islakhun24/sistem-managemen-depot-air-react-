@@ -139,7 +139,7 @@ class ApiService {
         return axios.put(`${TRANSAKSI}/update_status/${id}`,{}, {headers: authHeader()});
     }
     static deleteTransaksi= (id) => {
-        return axios.delete(`$TRANSAKSI}/delete/${id}`, {headers: authHeader()});
+        return axios.delete(`${TRANSAKSI}/delete/${id}`, {headers: authHeader()});
     }
     static chartDashboard= () => {
         return axios.get(`${DASHBOARD}/chart`, {headers: authHeader()});

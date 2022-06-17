@@ -1,4 +1,4 @@
-// const BASE_URL = "https://galon-api.herokuapp.com/api";
+// const BASE_URL = "http://localhost:3036/api";
 const BASE_URL = "https://mekarsari-api.stackind.my.id/api";
 
 export const REGISTER = BASE_URL + '/auth/signup';

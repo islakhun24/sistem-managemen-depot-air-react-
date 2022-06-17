@@ -52,7 +52,7 @@ const AddCustomer = (props) =>{
             nohp_customer,
             alamat_customer
         }
-        const response = await service.addCustomer(data);
+        const response = await service.updateCustomer(id,data);
         if(response.status === 200){
             handleClose();
             navigate('/customer');

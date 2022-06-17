@@ -37,28 +37,7 @@ const DetailTransaksi = (props) =>{
                 transaksi?.payment_methods === 'cash' ? 'Cash' : 'Tidak ada'
             ))
 
-        const text = `Order From Depot Air Minum Mekarsari\n
-        ${new Date(transaksi.date).getTime()} (${transaksi.date.split('T')[0]})\n
-        \n
-
-        Nama customer:\n
-        ${transaksi.customer.nama_customer}\n
-        \n
-        Barang : \n
-        Nama Barang:${transaksi.barang.nama_barang}\n
-        Satuan:${transaksi.barang.satuan}\n
-        Harga @barang:${transaksi.barang.harga}\n
-        Jumlah:${transaksi.jumlah}\n
-        Subtotal : Rp${transaksi?.total_harga}\n
-        \n
-        Metode Pengiriman : ${pengiriman}\n
-        Biaya Antar : Rp${transaksi?.biaya_pengantaran ? 'Rp.' +transaksi?.biaya_pengantaran: "-"}\n
-        
-        Payment : ${payment}\n
-        
-
-        Total Biaya: Rp${transaksi?.total_biaya}\n
-        Terima kasih sudah berbelanja.\n`
+        const text = `Order From Depot Air Minum Mekarsari%0a*${new Date(transaksi.date).getTime()} (${transaksi.date.split('T')[0]})*%0a%0aNama customer:%0a*${transaksi.customer.nama_customer}*%0a%0aBarang : %0aNama Barang:*${transaksi.barang.nama_barang}*%0aSatuan:*${transaksi.barang.satuan}*%0aHarga @barang:*${transaksi.barang.harga}*%0aJumlah:*${transaksi.jumlah}*%0aSubtotal : Rp*${transaksi?.total_harga}*%0a%0aMetode Pengiriman : *${pengiriman}*%0aBiaya Antar : Rp. *${transaksi?.biaya_pengantaran ? 'Rp. ' +transaksi?.biaya_pengantaran: "0"}*%0aPayment : *${payment}*%0aTotal Biaya: Rp. *${transaksi?.total_biaya}*%0aTerima kasih sudah berbelanja.%0a`
 
         location.href=`https://api.whatsapp.com/send?text=${text}&phone=${transaksi.customer.nohp_customer}`
     }
