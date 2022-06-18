@@ -85,12 +85,12 @@ const AddPengeluaran = (props) => {
                         
                      </div>
                      <div className='flex-1'>
-                        <TextField id="outlined-basic" value={jumlah} onChange={handleChangeJumlah} fullWidth size='medium' label="Jumlah" variant="outlined" required/>
+                        <TextField id="outlined-basic" type={'number'} value={jumlah} onChange={handleChangeJumlah} fullWidth size='medium' label="Jumlah" variant="outlined" required/>
                      </div>
                  </div>
                  <div className='flex mt-3 md:mt-8 flex-col md:flex-row gap-3 md:gap-8'>
                     <div className='flex-1'>
-                        <TextField id="outlined-basic" value={harga} onChange={handleChangeHarga} fullWidth size='medium' label="Harga" variant="outlined" required/>
+                        <TextField id="outlined-basic" type={'number'} value={harga} onChange={handleChangeHarga} fullWidth size='medium' label="Harga" variant="outlined" required/>
                     </div>
                     <div className='flex-1'>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -106,7 +106,7 @@ const AddPengeluaran = (props) => {
                     </div>
                  </div>
                  <div className='mt-3 md:mt-8'>
-                    <TextField id="outlined-basic" onChange={handleChangeKeterangan} value={keterangan} multiline rows={2} maxRows={4} fullWidth size='medium' label="Alamat Customer" variant="outlined" required/>
+                    <TextField id="outlined-basic" onChange={handleChangeKeterangan} value={keterangan} multiline rows={2} maxRows={4} fullWidth size='medium' label="Keterangan" variant="outlined" required/>
                  </div>
              </Card>;
              <div className='flex mt-3 md:mt-6 items-end justify-end flex-row'>

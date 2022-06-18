@@ -78,12 +78,12 @@ const AddBarang = (props) => {
                         
                      </div>
                      <div className='flex-1'>
-                        <TextField id="outlined-basic" value={jumlah} onChange={handleChangeJumlah} fullWidth size='medium' label="Jumlah" variant="outlined" required/>
+                        <TextField id="outlined-basic" value={jumlah} onChange={handleChangeJumlah} type={'number'} fullWidth size='medium' label="Jumlah" variant="outlined" required/>
                      </div>
                  </div>
                  <div className='flex mt-3 md:mt-8 flex-col md:flex-row gap-3 md:gap-8'>
                     <div className='flex-1'>
-                        <TextField id="outlined-basic" value={harga} onChange={handleChangeHarga} fullWidth size='medium' label="Harga" variant="outlined" required/>
+                        <TextField type={'number'} id="outlined-basic" value={harga} onChange={handleChangeHarga} fullWidth size='medium' label="Harga" variant="outlined" required/>
                     </div>
                 </div>
              </Card>;

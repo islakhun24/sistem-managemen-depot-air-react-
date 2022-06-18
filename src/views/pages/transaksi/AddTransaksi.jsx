@@ -405,6 +405,7 @@ const AddTransaksi = () => {
                   fullWidth
                   value={biaya_pengantaran}
                   size="medium"
+                  type={'number'}
                   label="Biaya Pengantaran"
                   variant="outlined"
                 />

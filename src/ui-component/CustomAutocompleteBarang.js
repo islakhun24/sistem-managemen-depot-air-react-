@@ -8,7 +8,12 @@ const CustomAutocompleteBarang = ({ options, onChange, onInputChange, defaultVal
         onInputChange={onInputChange}
         onChange={onChange}
         defaultValue={defaultValue}
-        getOptionLabel={option => `${option?.nama} (Rp. ${option?.harga|| '0'})` || ''}
+        getOptionLabel={option => {
+          const nama = option.nama || '';
+          const harga = option.harga || '';
+          const result = nama === '' || harga === '' ? '' : `${option.nama} (Rp. ${option.harga|| '0'})`;
+          return result;
+        }}
         renderInput={props => <TextField {...props} fullWidth  label={label} />}
       />
     );
