@@ -58,7 +58,7 @@ const AddTransaksi = () => {
   const [wallet_id, setWalletId] = useState("");
   const [jumlah, setJumlah] = useState(0);
   const [metode_pengiriman, setMetodePengiriman] = useState("");
-  const [biaya_pengantaran, setBiayaPengantaran] = useState("");
+  const [biaya_pengantaran, setBiayaPengantaran] = useState("1500");
   const [keterangan, setKeterangan] = useState("");
 
 
@@ -304,7 +304,7 @@ const AddTransaksi = () => {
       <Card variant="elevation" sx={{ p: 3 }}>
         <div className="flex flex-row gap-3 items-center">
           <i className="fa fa-bank"></i>
-          <div className="font-bold text-black">Payment Methods</div>
+          <div className="font-bold text-black">Metode Pembayaran</div>
         </div>
         <Divider sx={{ my: 2 }} light />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
