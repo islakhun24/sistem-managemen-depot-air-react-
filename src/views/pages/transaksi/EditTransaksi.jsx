@@ -61,7 +61,7 @@ import {
     const [wallet_id, setWalletId] = useState("");
     const [jumlah, setJumlah] = useState(0);
     const [metode_pengiriman, setMetodePengiriman] = useState("");
-    const [biaya_pengantaran, setBiayaPengantaran] = useState("");
+    const [biaya_pengantaran, setBiayaPengantaran] = useState("1500");
     const [keterangan, setKeterangan] = useState("");
     const fetchData = useCallback(async () => {
         const response = await service.detailTransaksi(id);
