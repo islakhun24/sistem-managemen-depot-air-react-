@@ -89,7 +89,7 @@ const AddCustomer = (props) =>{
              <div className='flex mt-3 md:mt-6 items-end justify-end flex-row'>
                 <div className='flex flex-row  gap-3 flex-1 md:flex-none'>
                     <button onClick={() => navigate(-1)} className='px-3 md:px-16 w-auto py-2 rounded bg-red-600 text-white font-bold flex-1'>Batal</button>
-                    <button onClick={()=>handleClickOpen()} className='px-3 md:px-16 w-auto py-2 rounded bg-green-600 text-white font-bold flex-1'>Simpan</button>
+                    <button onClick={()=>handleClickOpen()} className='px-3 md:px-16 w-auto py-2 rounded bg-green-600 text-white font-bold flex-1'>Edit</button>
                 </div>
              </div>
              <Dialog
@@ -99,7 +99,7 @@ const AddCustomer = (props) =>{
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                {"Simpan Customer"}
+                {"Edit Customer"}
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -109,7 +109,7 @@ const AddCustomer = (props) =>{
                 <DialogActions>
                 <Button color="error" onClick={handleClose}>Batal</Button>
                 <Button color="primary" onClick={handleSubmit} autoFocus>
-                    Simpan
+                    Edit
                 </Button>
                 </DialogActions>
             </Dialog>
